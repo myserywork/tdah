@@ -38,11 +38,6 @@ const answerOptions = [
   { value: 5, label: "Sempre", emoji: "😰" }
 ]
 
-// Reduced breathing moments - only 2
-const breathingMoments = [
-  { afterQuestion: 4, title: "Indo bem! 💪", message: "Você está no caminho certo. Cada resposta nos ajuda a entender melhor como você funciona.", icon: Heart },
-  { afterQuestion: 8, title: "Quase lá! 🎯", message: "Faltam só 4 perguntas. Você não é preguiçoso — seu cérebro funciona diferente.", icon: Lightbulb }
-]
 
 const categoryConfig: Record<string, { label: string, color: string, barClass: string }> = {
   'Foco': { label: 'Foco e Atenção', color: 'hsl(175 85% 50%)', barClass: 'bar-focus' },
@@ -131,11 +126,9 @@ const friendlyInsights = {
 }
 
 export default function TesteTDAH() {
-  const [stage, setStage] = useState<'intro' | 'test' | 'breathing' | 'analyzing' | 'capture' | 'result'>('intro')
+  const [stage, setStage] = useState<'intro' | 'test' | 'analyzing' | 'capture' | 'result'>('intro')
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [answers, setAnswers] = useState<number[]>(Array(12).fill(0))
-  const [currentBreathing, setCurrentBreathing] = useState<typeof breathingMoments[0] | null>(null)
-  const [breathingProgress, setBreathingProgress] = useState(0)
   const [report, setReport] = useState<ReportData | null>(null)
   const [formData, setFormData] = useState({ name: '', whatsapp: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -185,44 +178,22 @@ export default function TesteTDAH() {
     setTimeout(() => setShowMicroReward(false), 800)
     
     setTimeout(() => {
-      const bm = breathingMoments.find(b => b.afterQuestion === currentQuestion + 1)
-      if (bm) { setCurrentBreathing(bm); setStage('breathing'); setBreathingProgress(0) }
-      else if (currentQuestion + 1 < questions.length) setCurrentQuestion(currentQuestion + 1)
-      else { 
+      if (currentQuestion + 1 < questions.length) {
+        setCurrentQuestion(currentQuestion + 1)
+      } else { 
         const finalScore = newAnswers.reduce((sum, val) => sum + val, 0)
         setStage('analyzing')
         trackEvents.testCompleted(finalScore)
         fbPixelEvents.testCompleted(finalScore)
         generateReport(newAnswers) 
       }
-    }, 400)
-  }
-
-  const handleSkipBreathing = () => {
-    setCurrentBreathing(null)
-    if (currentQuestion + 1 < questions.length) { setCurrentQuestion(currentQuestion + 1); setStage('test') }
-    else { setStage('analyzing'); generateReport(answers) }
-  }
-
-  const handleBreathingComplete = () => {
-    setCurrentBreathing(null)
-    if (currentQuestion + 1 < questions.length) { setCurrentQuestion(currentQuestion + 1); setStage('test') }
-    else { setStage('analyzing'); generateReport(answers) }
+    }, 300)
   }
 
   // Track page view on mount
   useEffect(() => {
     fbPixelEvents.viewContent({ content_name: 'Teste TDAH', content_ids: ['teste-tdah'] })
   }, [])
-
-  useEffect(() => {
-    if (stage === 'breathing') {
-      const timer = setInterval(() => {
-        setBreathingProgress(p => { if (p >= 100) { clearInterval(timer); return 100 } return p + 5 }) // Faster: 2s total
-      }, 100)
-      return () => clearInterval(timer)
-    }
-  }, [stage])
 
   const generateReport = async (finalAnswers: number[]) => {
     const score = finalAnswers.reduce((sum, val) => sum + val, 0)
@@ -505,23 +476,6 @@ export default function TesteTDAH() {
           </motion.div>
         )}
 
-        {/* Breathing - Shorter and Skippable */}
-        {stage === 'breathing' && currentBreathing && (
-          <motion.div key="breathing" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="min-h-screen flex items-center justify-center p-4">
-            <div className="max-w-sm w-full text-center breathing-card p-6 rounded-2xl">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-secondary/20 flex items-center justify-center animate-breathe"><currentBreathing.icon className="w-7 h-7 text-secondary" /></div>
-              <h2 className="text-xl font-bold mb-2 text-secondary">{currentBreathing.title}</h2>
-              <p className="text-muted-foreground mb-6 text-sm leading-relaxed">{currentBreathing.message}</p>
-              <div className="w-full max-w-[200px] mx-auto mb-4"><div className="h-1 bg-muted rounded-full overflow-hidden"><div className="h-full bg-secondary rounded-full transition-all duration-100" style={{ width: `${breathingProgress}%` }} /></div></div>
-              <div className="flex gap-3 justify-center">
-                <button onClick={handleSkipBreathing} className="text-xs text-muted-foreground hover:text-foreground underline">Pular →</button>
-                <button onClick={handleBreathingComplete} disabled={breathingProgress < 100} className={`btn-secondary px-5 py-2.5 rounded-lg text-sm ${breathingProgress < 100 ? 'opacity-50' : ''}`}>
-                  {breathingProgress < 100 ? '...' : 'Continuar'}
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         {/* Analyzing */}
         {stage === 'analyzing' && (
