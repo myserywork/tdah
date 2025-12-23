@@ -719,89 +719,125 @@ export default function TesteTDAH() {
           </motion.div>
         )}
 
-        {/* Result - Sales Page Optimized */}
+        {/* Result - MASTERPIECE SALES PAGE */}
         {stage === 'result' && report && (
           <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen">
             
-            {/* STICKY CTA AT TOP */}
-            <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border py-3 px-4">
-              <div className="max-w-3xl mx-auto flex items-center justify-between gap-4">
-                <div className="hidden sm:flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {['MS', 'RO', 'CM'].map((a, i) => (
-                      <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-[9px] font-bold text-background border-2 border-background">{a}</div>
-                    ))}
-                  </div>
-                  <span className="text-xs text-muted-foreground"><span className="text-primary font-semibold">{onlineCount}</span> online</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs">
-                  <Timer className="w-3.5 h-3.5 text-red-400" />
-                  <span className="text-red-400 font-medium">{countdown.minutes}:{countdown.seconds.toString().padStart(2, '0')}</span>
-                </div>
-                <Link href="/checkout">
-                  <button className="btn-primary px-4 py-2.5 rounded-lg text-sm font-bold">
-                    Garantir por R$ 19,90 →
-                  </button>
-                </Link>
-              </div>
-            </div>
+            {/* ========== HERO: EMOTIONAL CONNECTION ========== */}
+            <section className="relative py-12 px-4 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
+              <div className="max-w-3xl mx-auto relative">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+                  
+                  {/* Location badge */}
+                  {userLocation.city && (
+                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm mb-6">
+                      📍 {userLocation.city} • {userLocation.regionPercent}% dos adultos têm TDAH não diagnosticado
+                    </motion.div>
+                  )}
 
-            {/* Hero Section - Simplified */}
-            <section className="py-10 px-4">
-              <div className="max-w-2xl mx-auto text-center">
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                  <div className="text-4xl mb-4">🧠</div>
-                  <h1 className="text-2xl md:text-3xl font-bold mb-3">
-                    {formData.name}, <span className="gradient-primary">agora faz sentido</span>
-                  </h1>
-                  <p className="text-muted-foreground text-sm md:text-base">
-                    Você não é preguiçoso. Seu cérebro funciona diferente.
+                  <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
+                    {formData.name}, agora eu preciso que você<br />
+                    <span className="gradient-primary">leia isso com atenção</span>
+                  </motion.h1>
+                  
+                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
+                    O que você vai ver agora pode mudar <span className="text-foreground font-medium">completamente</span> a forma como você se enxerga. 
+                    E mais importante: pode ser o primeiro passo para <span className="text-foreground font-medium">parar de sofrer em silêncio</span>.
+                  </motion.p>
+
+                  {/* Score Circle */}
+                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3, type: "spring" }} className="relative w-40 h-40 mx-auto mb-6">
+                    <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                      <circle cx="18" cy="18" r="16" fill="none" stroke="currentColor" strokeWidth="2" className="text-muted/30" />
+                      <motion.circle cx="18" cy="18" r="16" fill="none" stroke={getScoreLevel(totalScore).barColor} strokeWidth="2.5" strokeLinecap="round" initial={{ strokeDasharray: "0 100" }} animate={{ strokeDasharray: `${scorePercentage} 100` }} transition={{ duration: 1.5, delay: 0.5 }} />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-4xl font-bold">{scorePercentage}%</span>
+                      <span className={`text-sm font-semibold ${getScoreLevel(totalScore).color}`}>{getScoreLevel(totalScore).level}</span>
+                    </div>
+                  </motion.div>
+
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className={`inline-block px-6 py-3 rounded-xl ${getScoreLevel(totalScore).bg} ${getScoreLevel(totalScore).border} border`}>
+                    <p className="text-sm">
+                      <span className="font-bold">Compatibilidade com TDAH:</span>{' '}
+                      <span className={`font-bold ${getScoreLevel(totalScore).color}`}>{getScoreLevel(totalScore).level}</span>
+                    </p>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </section>
+
+            {/* ========== VALIDATION: "Agora faz sentido" ========== */}
+            <section className="py-12 px-4 bg-card/50">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                    Sabe aquela sensação de que <span className="gradient-warm">algo está errado com você</span>?
+                  </h2>
+                  <p className="text-muted-foreground text-lg">Agora você tem a resposta.</p>
+                </motion.div>
+
+                <div className="grid md:grid-cols-2 gap-4 mb-8">
+                  {[
+                    { emoji: "😔", text: "Você não é preguiçoso", subtext: "Seu cérebro só precisa de mais estímulo para começar tarefas" },
+                    { emoji: "🧠", text: "Você não é burro", subtext: "Na verdade, pessoas com TDAH costumam ser extremamente criativas" },
+                    { emoji: "💪", text: "Você não é fraco", subtext: "Você luta batalhas invisíveis que os outros nem imaginam" },
+                    { emoji: "✨", text: "Você não é defeituoso", subtext: "Seu cérebro funciona diferente — e isso pode ser um superpoder" }
+                  ].map((item, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-5 rounded-xl bg-card border border-border">
+                      <div className="text-3xl mb-2">{item.emoji}</div>
+                      <h3 className="font-bold text-lg mb-1">{item.text}</h3>
+                      <p className="text-sm text-muted-foreground">{item.subtext}</p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center">
+                  <p className="text-lg text-muted-foreground">
+                    Tudo que você passou até hoje —{' '}
+                    <span className="text-foreground font-medium">as críticas, a frustração, a culpa</span>{' '}
+                    — não foi porque você não se esforçou o suficiente.
                   </p>
-                </motion.div>
-
-                {/* Score Card - Compact */}
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className={`mt-6 p-5 rounded-2xl ${getScoreLevel(totalScore).bg} ${getScoreLevel(totalScore).border} border`}>
-                  <div className="flex items-center justify-center gap-6">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold number-display">{scorePercentage}%</div>
-                      <div className={`text-sm font-semibold ${getScoreLevel(totalScore).color}`}>{getScoreLevel(totalScore).level}</div>
-                    </div>
-                    <div className="text-left text-sm">
-                      <p className="text-muted-foreground">{report.summary}</p>
-                    </div>
-                  </div>
+                  <p className="text-xl font-bold mt-4 gradient-primary">Foi porque ninguém te ensinou a usar seu cérebro do jeito certo.</p>
                 </motion.div>
               </div>
             </section>
 
-            {/* Quick CTA */}
-            <section className="py-6 px-4 bg-primary/5 border-y border-primary/10">
-              <div className="max-w-2xl mx-auto text-center">
-                <p className="text-sm text-muted-foreground mb-3">
-                  <span className="text-foreground font-medium">2.847+ pessoas</span> já transformaram suas vidas
-                </p>
-                <Link href="/checkout">
-                  <button className="btn-primary px-8 py-4 rounded-xl text-base font-bold w-full sm:w-auto">
-                    Quero a Solução Completa por R$ 19,90 →
-                  </button>
-                </Link>
-                <p className="text-xs text-muted-foreground mt-2">Garantia de 7 dias • Acesso imediato</p>
-              </div>
-            </section>
+            {/* ========== YOUR COMPLETE BRAIN MAP ========== */}
+            <section className="py-12 px-4">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <span className="badge badge-primary mb-4"><BarChart3 className="w-3.5 h-3.5" /> Seu Mapa Cerebral Completo</span>
+                  <h2 className="text-2xl md:text-3xl font-bold">Como seu cérebro <span className="gradient-primary">realmente funciona</span></h2>
+                </motion.div>
 
-            {/* Category Analysis - Compact */}
-            <section className="py-10 px-4">
-              <div className="max-w-2xl mx-auto">
-                <h3 className="font-bold mb-4 flex items-center gap-2"><BarChart3 className="w-4 h-4 text-primary" /> Como seu cérebro funciona</h3>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-4 mb-8">
                   {getCategoryScores().map((cat, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="p-3 rounded-xl bg-card border border-border">
-                      <div className="flex justify-between text-xs mb-1.5">
-                        <span>{cat.label}</span>
-                        <span className="font-bold" style={{ color: cat.color }}>{Math.round(cat.percentage)}%</span>
+                    <motion.div key={i} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-5 rounded-xl bg-card border border-border">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${cat.color}20` }}>
+                            {cat.name === 'Foco' && <Target className="w-5 h-5" style={{ color: cat.color }} />}
+                            {cat.name === 'Memória' && <Brain className="w-5 h-5" style={{ color: cat.color }} />}
+                            {cat.name === 'Impulsividade' && <Zap className="w-5 h-5" style={{ color: cat.color }} />}
+                            {cat.name === 'Procrastinação' && <Clock className="w-5 h-5" style={{ color: cat.color }} />}
+                            {cat.name === 'Emocional' && <Heart className="w-5 h-5" style={{ color: cat.color }} />}
+                            {cat.name === 'Autoestima' && <Shield className="w-5 h-5" style={{ color: cat.color }} />}
+                          </div>
+                          <div>
+                            <h4 className="font-bold">{cat.label}</h4>
+                            <p className="text-xs text-muted-foreground">
+                              {cat.percentage >= 70 ? '⚠️ Área que precisa de atenção' : cat.percentage >= 50 ? '📊 Nível moderado' : '✅ Relativamente controlado'}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className="text-2xl font-bold" style={{ color: cat.color }}>{Math.round(cat.percentage)}%</span>
+                        </div>
                       </div>
-                      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                        <motion.div className={`h-full rounded-full ${cat.barClass}`} initial={{ width: 0 }} whileInView={{ width: `${cat.percentage}%` }} viewport={{ once: true }} transition={{ duration: 0.6 }} />
+                      <div className="h-3 bg-muted rounded-full overflow-hidden">
+                        <motion.div className={`h-full rounded-full ${cat.barClass}`} initial={{ width: 0 }} whileInView={{ width: `${cat.percentage}%` }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} />
                       </div>
                     </motion.div>
                   ))}
@@ -809,17 +845,28 @@ export default function TesteTDAH() {
               </div>
             </section>
 
-            {/* Insights - Simplified */}
-            <section className="py-10 px-4 bg-card/30">
-              <div className="max-w-2xl mx-auto">
-                <h3 className="font-bold mb-4 text-center"><Lightbulb className="w-4 h-4 text-primary inline mr-2" />O que descobrimos sobre você</h3>
-                <div className="space-y-3">
+            {/* ========== INSIGHTS: What this means ========== */}
+            <section className="py-12 px-4 bg-card/50">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <span className="badge badge-secondary mb-4"><Lightbulb className="w-3.5 h-3.5" /> Análise Personalizada</span>
+                  <h2 className="text-2xl md:text-3xl font-bold">O que isso <span className="gradient-secondary">significa pra você</span></h2>
+                </motion.div>
+
+                <div className="space-y-4">
                   {getFriendlyInsights().map((ins, i) => {
                     const Icon = iconMap[ins.icon] || Brain
                     return (
-                      <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-4 rounded-xl bg-card border border-border flex gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0"><Icon className="w-5 h-5 text-primary" /></div>
-                        <div><h4 className="font-semibold text-sm mb-0.5">{ins.title}</h4><p className="text-xs text-muted-foreground">{ins.description}</p></div>
+                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-6 rounded-xl bg-card border border-border">
+                        <div className="flex gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-6 h-6 text-primary" />
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-lg mb-2">{ins.title}</h4>
+                            <p className="text-muted-foreground leading-relaxed">{ins.description}</p>
+                          </div>
+                        </div>
                       </motion.div>
                     )
                   })}
@@ -827,123 +874,314 @@ export default function TesteTDAH() {
               </div>
             </section>
 
-            {/* Life OS Section */}
+            {/* ========== QUICK WINS: Comece HOJE ========== */}
             <section className="py-12 px-4">
-              <div className="max-w-2xl mx-auto">
-                <div className="card-purple p-6 rounded-2xl text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/20 rounded-full blur-3xl" />
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <span className="badge badge-amber mb-4"><Zap className="w-3.5 h-3.5" /> Ação Imediata</span>
+                  <h2 className="text-2xl md:text-3xl font-bold">3 técnicas pra aplicar <span className="gradient-warm">ainda hoje</span></h2>
+                  <p className="text-muted-foreground mt-2">Isso é só uma amostra do que você vai aprender</p>
+                </motion.div>
+
+                <div className="space-y-4">
+                  {report.quickWins.map((qw, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-6 rounded-xl bg-gradient-to-r from-amber-500/5 to-orange-500/5 border border-amber-500/20">
+                      <div className="flex gap-4">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0 text-background font-bold">{i + 1}</div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-lg">{qw.title}</h4>
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400">{qw.timeToResult}</span>
+                          </div>
+                          <p className="text-muted-foreground">{qw.description}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* ========== PAIN AMPLIFICATION: O que acontece se você não agir ========== */}
+            <section className="py-16 px-4 bg-gradient-to-b from-red-500/5 to-transparent">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                    {formData.name}, eu preciso ser <span className="text-red-400">honesto</span> com você
+                  </h2>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="p-6 rounded-xl bg-red-500/5 border border-red-500/20 mb-8">
+                  <p className="text-lg leading-relaxed mb-4">
+                    Você pode fechar essa página agora e continuar vivendo do <span className="font-bold">mesmo jeito</span>.
+                  </p>
+                  <p className="text-muted-foreground mb-4">
+                    Acordar amanhã com a mesma sensação de que <span className="text-foreground">algo está errado</span>. 
+                    Procrastinar as mesmas tarefas. Esquecer os mesmos compromissos. 
+                    Ouvir as mesmas críticas. Sentir a mesma culpa.
+                  </p>
+                  <p className="text-muted-foreground">
+                    E daqui a <span className="text-foreground font-bold">1 ano</span>, estar exatamente no mesmo lugar — 
+                    se perguntando por que você nunca consegue fazer as coisas acontecerem.
+                  </p>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center">
+                  <p className="text-xl font-bold mb-2">Ou você pode fazer diferente.</p>
+                  <p className="text-muted-foreground">Hoje. Agora. Nesse exato momento.</p>
+                </motion.div>
+              </div>
+            </section>
+
+            {/* ========== DREAM STATE: Imagine sua vida ========== */}
+            <section className="py-16 px-4">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                    Imagina <span className="gradient-primary">acordar amanhã</span> e...
+                  </h2>
+                </motion.div>
+
+                <div className="grid md:grid-cols-2 gap-4 mb-10">
+                  {[
+                    { emoji: "⏰", text: "Saber exatamente o que fazer e CONSEGUIR fazer" },
+                    { emoji: "🎯", text: "Focar quando precisa, sem precisar esperar o desespero" },
+                    { emoji: "📝", text: "Nunca mais esquecer compromissos importantes" },
+                    { emoji: "😌", text: "Parar de se culpar por coisas que você não controla" },
+                    { emoji: "💪", text: "Usar seu hiperfoco como SUPERPODER, não como acidente" },
+                    { emoji: "❤️", text: "Ter relacionamentos melhores porque você se entende" }
+                  ].map((item, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+                      <span className="text-2xl">{item.emoji}</span>
+                      <span className="text-sm font-medium">{item.text}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center">
+                  <p className="text-xl text-muted-foreground mb-4">Isso não é fantasia. É o que acontece quando você...</p>
+                  <p className="text-2xl font-bold gradient-primary">Aprende a trabalhar COM seu cérebro, não contra ele.</p>
+                </motion.div>
+              </div>
+            </section>
+
+            {/* ========== LIFE OS: A Solução ========== */}
+            <section className="py-16 px-4 bg-gradient-to-b from-secondary/10 via-secondary/5 to-transparent">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <span className="badge badge-secondary mb-4"><Gamepad2 className="w-3.5 h-3.5" /> A Solução Completa</span>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    Apresento a você o <span className="gradient-secondary">Life OS</span>
+                  </h2>
+                  <p className="text-xl text-muted-foreground">O sistema operacional para cérebros que funcionam diferente</p>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="card-purple p-8 rounded-3xl relative overflow-hidden mb-8">
+                  <div className="absolute top-0 right-0 w-60 h-60 bg-secondary/20 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-40 h-40 bg-primary/10 rounded-full blur-2xl" />
+                  
                   <div className="relative">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-[hsl(285_80%_55%)] flex items-center justify-center mx-auto mb-4">
-                      <Gamepad2 className="w-8 h-8 text-white" />
+                    <div className="flex flex-col md:flex-row gap-8 items-center mb-8">
+                      <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-secondary to-[hsl(285_80%_55%)] flex items-center justify-center flex-shrink-0 shadow-lg shadow-secondary/30">
+                        <Gamepad2 className="w-12 h-12 text-white" />
+                      </div>
+                      <div className="text-center md:text-left">
+                        <h3 className="text-2xl font-bold mb-2">Sua vida. Gamificada. Dominada.</h3>
+                        <p className="text-muted-foreground">Transforme cada tarefa em missão. Cada hábito em power-up. Cada dia em uma vitória.</p>
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">App Life OS</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Gamifique sua vida e vença a paralisia! 1 ano de acesso incluso.</p>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {['🎮 Missões', '⭐ XP', '🏆 Conquistas', '🔥 Streaks'].map((t, i) => (
-                        <span key={i} className="px-2.5 py-1 rounded-full bg-secondary/20 text-secondary text-xs font-medium">{t}</span>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {[
+                        { emoji: "🎮", title: "Missões Diárias", desc: "Tarefas viram quests com recompensas" },
+                        { emoji: "⭐", title: "Sistema de XP", desc: "Evolua de nível completando objetivos" },
+                        { emoji: "🏆", title: "Conquistas", desc: "Desbloqueie badges por marcos" },
+                        { emoji: "🔥", title: "Streaks", desc: "Mantenha sequências, ganhe bônus" },
+                        { emoji: "📊", title: "Analytics", desc: "Veja sua evolução em tempo real" },
+                        { emoji: "⚔️", title: "Boss Fights", desc: "Enfrente seus maiores desafios" }
+                      ].map((item, i) => (
+                        <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }} className="p-4 rounded-xl bg-background/50 border border-secondary/20 text-center">
+                          <div className="text-2xl mb-2">{item.emoji}</div>
+                          <h4 className="font-bold text-sm mb-1">{item.title}</h4>
+                          <p className="text-xs text-muted-foreground">{item.desc}</p>
+                        </motion.div>
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center">
+                  <p className="text-lg text-muted-foreground mb-2">
+                    Seu cérebro TDAH <span className="text-foreground font-bold">precisa de dopamina</span> para funcionar.
+                  </p>
+                  <p className="text-xl font-bold">O Life OS entrega isso em cada clique. ✨</p>
+                </motion.div>
               </div>
             </section>
 
-            {/* Quick Wins - Compact */}
-            <section className="py-10 px-4 bg-card/30">
-              <div className="max-w-2xl mx-auto">
-                <h3 className="font-bold mb-4 text-center"><Zap className="w-4 h-4 text-amber-400 inline mr-2" />3 dicas pra começar HOJE</h3>
-                <div className="space-y-3">
-                  {report.quickWins.map((qw, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-4 rounded-xl bg-card border border-border flex gap-3">
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-sm font-bold text-primary">{i + 1}</div>
-                      <div><h4 className="font-semibold text-sm mb-0.5">{qw.title}</h4><p className="text-xs text-muted-foreground">{qw.description}</p></div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </section>
+            {/* ========== TESTIMONIALS: Prova Social ========== */}
+            <section className="py-16 px-4">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <span className="badge badge-primary mb-4"><Star className="w-3.5 h-3.5" /> Histórias Reais</span>
+                  <h2 className="text-2xl md:text-3xl font-bold">Pessoas como você que <span className="gradient-primary">transformaram suas vidas</span></h2>
+                </motion.div>
 
-            {/* Testimonials - Compact */}
-            <section className="py-10 px-4">
-              <div className="max-w-2xl mx-auto">
-                <h3 className="font-bold mb-4 text-center"><Star className="w-4 h-4 text-amber-400 inline mr-2" />Quem já usa, ama</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {testimonials.slice(0, 2).map((t, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="testimonial-card p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-background">{t.avatar}</div>
-                        <div><div className="font-semibold text-sm">{t.name}</div><div className="text-[10px] text-muted-foreground">{t.role}</div></div>
-                        <div className="ml-auto flex gap-0.5">{[...Array(5)].map((_, j) => <Star key={j} className="w-3 h-3 fill-amber-400 text-amber-400" />)}</div>
+                <div className="space-y-4">
+                  {testimonials.map((t, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-6 rounded-xl bg-card border border-border">
+                      <div className="flex items-start gap-4">
+                        <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-lg font-bold text-background flex-shrink-0">{t.avatar}</div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-bold">{t.name}</span>
+                            <span className="text-xs text-muted-foreground">{t.age} anos • {t.role}</span>
+                            <div className="flex gap-0.5 ml-auto">{[...Array(5)].map((_, j) => <Star key={j} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />)}</div>
+                          </div>
+                          <p className="text-muted-foreground leading-relaxed mb-3">"{t.text}"</p>
+                          <div className="flex items-center gap-2 text-sm">
+                            <Trophy className="w-4 h-4 text-amber-400" />
+                            <span className="font-bold text-primary">{t.result}</span>
+                          </div>
+                        </div>
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{t.text}</p>
-                      <div className="mt-2 text-xs text-primary font-medium flex items-center gap-1"><Trophy className="w-3 h-3" /> {t.result}</div>
                     </motion.div>
                   ))}
                 </div>
               </div>
             </section>
 
-            {/* Final CTA */}
-            <section className="py-12 px-4">
-              <div className="max-w-2xl mx-auto">
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card-highlight p-6 md:p-8 rounded-2xl text-center relative overflow-hidden">
+            {/* ========== IRRESISTIBLE OFFER ========== */}
+            <section className="py-16 px-4 bg-gradient-to-b from-primary/5 via-primary/10 to-primary/5">
+              <div className="max-w-3xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium mb-6">
+                    <Timer className="w-4 h-4" />
+                    Oferta especial expira em {countdown.minutes}:{countdown.seconds.toString().padStart(2, '0')}
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                    Tudo isso por um valor que <span className="gradient-primary">não faz sentido</span>
+                  </h2>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="card-highlight p-8 rounded-3xl relative overflow-hidden mb-8">
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
+                  
                   <div className="relative">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs mb-4">
-                      <Timer className="w-3.5 h-3.5" /> Expira em {countdown.minutes}:{countdown.seconds.toString().padStart(2, '0')}
-                    </div>
-                    
-                    <h2 className="text-2xl font-bold mb-3">Transforme sua vida <span className="gradient-primary">agora</span></h2>
-                    
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                      <div className="text-sm text-muted-foreground line-through">R$ 197</div>
-                      <div className="text-4xl font-bold text-primary">R$ 19,90</div>
+                    {/* What's included */}
+                    <div className="mb-8">
+                      <h3 className="font-bold text-lg mb-4 text-center">O que você recebe:</h3>
+                      <div className="space-y-3">
+                        {[
+                          { item: "App Life OS por 1 ano completo", value: "R$ 197", emoji: "🎮" },
+                          { item: "Guia Mente Caótica (6 módulos)", value: "R$ 147", emoji: "📚" },
+                          { item: "Templates de Produtividade", value: "R$ 97", emoji: "📝" },
+                          { item: "Masterclass: TDAH no Trabalho", value: "R$ 147", emoji: "🎓" },
+                          { item: "Áudios de Foco e Concentração", value: "R$ 47", emoji: "🎧" },
+                          { item: "Suporte via WhatsApp", value: "R$ 97", emoji: "💬" }
+                        ].map((item, i) => (
+                          <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                            <div className="flex items-center gap-3">
+                              <span className="text-xl">{item.emoji}</span>
+                              <span className="font-medium">{item.item}</span>
+                            </div>
+                            <span className="text-muted-foreground line-through text-sm">{item.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-between p-4 rounded-lg bg-muted/50 mt-4">
+                        <span className="font-bold">Valor total:</span>
+                        <span className="text-xl line-through text-muted-foreground">R$ 732</span>
+                      </div>
                     </div>
 
+                    {/* Price */}
+                    <div className="text-center mb-8">
+                      <p className="text-muted-foreground mb-2">Hoje você leva tudo isso por apenas:</p>
+                      <div className="flex items-center justify-center gap-4">
+                        <span className="text-3xl text-muted-foreground line-through">R$ 197</span>
+                        <div>
+                          <span className="text-6xl font-bold text-primary">R$ 19,90</span>
+                          <p className="text-sm text-muted-foreground">Pagamento único • Sem mensalidades</p>
+                        </div>
+                      </div>
+                      <p className="text-emerald-400 font-bold mt-2">Você economiza R$ 712,10! 🎉</p>
+                    </div>
+
+                    {/* CTA */}
                     <Link href="/checkout">
-                      <button className="btn-primary px-8 py-5 rounded-xl text-lg font-bold w-full mb-4">
-                        QUERO COMEÇAR AGORA →
-                      </button>
+                      <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary w-full py-6 rounded-2xl text-xl font-bold shadow-lg shadow-primary/30 mb-4">
+                        QUERO TRANSFORMAR MINHA VIDA AGORA →
+                      </motion.button>
                     </Link>
 
-                    {/* Security Badges */}
-                    <div className="flex flex-wrap justify-center gap-2 mb-4">
+                    {/* Trust */}
+                    <div className="flex flex-wrap justify-center gap-3 mb-6">
                       {[
-                        { icon: ShieldCheck, text: 'Seguro' },
-                        { icon: Lock, text: 'SSL' },
-                        { icon: CreditCard, text: 'Pix/Cartão' }
+                        { icon: ShieldCheck, text: 'Site Seguro' },
+                        { icon: Lock, text: 'SSL 256-bit' },
+                        { icon: CreditCard, text: 'Pix ou Cartão' },
+                        { icon: Fingerprint, text: 'Dados Protegidos' }
                       ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px]">
-                          <item.icon className="w-3 h-3" /> {item.text}
+                        <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs">
+                          <item.icon className="w-3.5 h-3.5" /> {item.text}
                         </div>
                       ))}
                     </div>
 
-                    <div className="flex flex-wrap justify-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-400" /> App Life OS 1 ano</span>
-                      <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-400" /> Garantia 7 dias</span>
-                      <span className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-400" /> Suporte WhatsApp</span>
-                    </div>
-
-                    {/* Guarantee - Compact */}
-                    <div className="mt-5 p-3 rounded-xl bg-background/50 border border-border flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                        <Shield className="w-5 h-5 text-emerald-400" />
-                      </div>
-                      <div className="text-left">
-                        <h4 className="font-bold text-emerald-400 text-sm">Garantia de 7 dias</h4>
-                        <p className="text-[10px] text-muted-foreground">Não gostou? Devolvemos 100%</p>
+                    {/* Guarantee */}
+                    <div className="p-5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                          <Shield className="w-8 h-8 text-emerald-400" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-emerald-400 text-lg mb-1">Garantia Incondicional de 7 Dias</h4>
+                          <p className="text-sm text-muted-foreground">Se você não ficar 100% satisfeito, devolvemos cada centavo. Sem perguntas, sem burocracia, sem estresse. <span className="text-foreground font-medium">Risco ZERO pra você.</span></p>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </motion.div>
+
+                {/* Final urgency */}
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="text-center">
+                  <p className="text-muted-foreground mb-4">
+                    <span className="text-foreground font-bold">{onlineCount} pessoas</span> estão vendo essa oferta agora.
+                  </p>
+                  <p className="text-sm text-red-400">
+                    ⚠️ Esse preço é exclusivo para quem acabou de fazer o teste. Ao sair dessa página, você perde o desconto.
+                  </p>
+                </motion.div>
+              </div>
+            </section>
+
+            {/* ========== FINAL CTA ========== */}
+            <section className="py-16 px-4">
+              <div className="max-w-2xl mx-auto text-center">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                    {formData.name}, a escolha é sua.
+                  </h2>
+                  <p className="text-lg text-muted-foreground mb-8">
+                    Você pode continuar lutando sozinho contra um cérebro que você não entende...<br />
+                    <span className="text-foreground font-bold">Ou pode dar o primeiro passo hoje.</span>
+                  </p>
+                  <Link href="/checkout">
+                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-12 py-6 rounded-2xl text-xl font-bold">
+                      SIM, EU QUERO MUDAR MINHA VIDA →
+                    </motion.button>
+                  </Link>
+                  <p className="text-sm text-muted-foreground mt-4">Acesso imediato • Garantia de 7 dias • Suporte humanizado</p>
                 </motion.div>
               </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-6 px-4 border-t border-border/50">
-              <div className="max-w-2xl mx-auto text-center">
-                <p className="text-[10px] text-muted-foreground mb-3">* Este teste não substitui diagnóstico médico profissional</p>
-                <Link href="/" className="text-xs text-muted-foreground hover:text-foreground">← Voltar ao início</Link>
+            <footer className="py-8 px-4 border-t border-border/50">
+              <div className="max-w-3xl mx-auto text-center">
+                <p className="text-xs text-muted-foreground mb-3">* Este teste e material não substituem diagnóstico ou tratamento médico profissional</p>
+                <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">← Voltar ao início</Link>
               </div>
             </footer>
           </motion.div>
