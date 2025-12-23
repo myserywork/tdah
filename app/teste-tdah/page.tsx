@@ -640,9 +640,11 @@ export default function TesteTDAH() {
                       </div>
                     </div>
 
-                    <button className="btn-primary px-10 py-5 rounded-xl text-lg font-bold w-full sm:w-auto mb-6">
-                      Quero Começar Agora por R$ 19,90 →
-                    </button>
+                    <Link href="/checkout">
+                      <button className="btn-primary px-10 py-5 rounded-xl text-lg font-bold w-full sm:w-auto mb-6">
+                        Quero Começar Agora por R$ 19,90 →
+                      </button>
+                    </Link>
 
                     {/* Security Badges */}
                     <div className="flex flex-wrap justify-center gap-3 mb-6">
