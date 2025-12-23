@@ -2,18 +2,23 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
+// UPDATED: 12 questions for better completion rate
 const questionCategories = [
-  'Foco', 'Foco', 'Foco', 'Foco',
-  'Memória', 'Memória', 'Memória', 'Memória',
-  'Impulsividade', 'Impulsividade', 'Impulsividade', 'Impulsividade',
-  'Procrastinação', 'Procrastinação', 'Procrastinação', 'Procrastinação',
-  'Emocional', 'Emocional', 'Autoestima', 'Autoestima'
+  'Foco', 'Foco',           // 2 questions
+  'Memória', 'Memória',     // 2 questions
+  'Impulsividade', 'Impulsividade', // 2 questions
+  'Procrastinação', 'Procrastinação', // 2 questions
+  'Emocional', 'Emocional', // 2 questions
+  'Autoestima', 'Autoestima' // 2 questions
 ]
 
+// Max score is now 60 (12 questions * 5)
 function getScoreLevel(totalScore: number) {
-  if (totalScore <= 30) return 'leve'
-  if (totalScore <= 50) return 'moderado'
-  if (totalScore <= 70) return 'significativo'
+  const maxScore = 60
+  const percentage = (totalScore / maxScore) * 100
+  if (percentage <= 30) return 'leve'
+  if (percentage <= 50) return 'moderado'
+  if (percentage <= 70) return 'significativo'
   return 'alto'
 }
 
@@ -56,7 +61,8 @@ export async function POST(req: NextRequest) {
     const prompt = `Você é um especialista em TDAH que fala de forma SUPER acessível e amigável, como um amigo que entende o que a pessoa está passando.
 
 DADOS DO USUÁRIO:
-- Pontuação total: ${totalScore}/100 (nível ${level})
+- Pontuação total: ${totalScore}/60 (nível ${level})
+- Porcentagem: ${Math.round((totalScore / 60) * 100)}%
 - Área mais afetada: ${weakestArea.name} (${weakestArea.percentage}%)
 
 Retorne APENAS um JSON válido (sem markdown) com esta estrutura:

@@ -46,7 +46,7 @@ const testimonials = [
 
 const faqs = [
   { question: "Isso substitui diagnóstico médico?", answer: "Não. Este é um teste de autoavaliação para você entender melhor seus sintomas. Para diagnóstico oficial, procure um psiquiatra ou neurologista especializado em TDAH." },
-  { question: "Quanto tempo leva o teste?", answer: "Entre 5 a 8 minutos. São 20 perguntas que vão te fazer refletir sobre padrões que você talvez nunca tenha percebido." },
+  { question: "Quanto tempo leva o teste?", answer: "Cerca de 3 minutos. São 12 perguntas diretas que vão te fazer entender padrões que você talvez nunca tenha percebido." },
   { question: "O que é o Life OS?", answer: "É um aplicativo web que transforma sua rotina em um jogo. Com missões, XP, conquistas e streaks, você finalmente consegue criar hábitos sem sofrer. Acesso por 1 ano incluso!" },
   { question: "Posso pedir reembolso?", answer: "Sim! Você tem 7 dias de garantia incondicional. Se não gostar por qualquer motivo, devolvemos 100% do valor. Sem perguntas." }
 ]
@@ -174,6 +174,7 @@ const FloatingIcons = () => {
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [onlineCount, setOnlineCount] = useState(0)
 
   // Track page visit
   useEffect(() => {
@@ -182,6 +183,19 @@ export default function LandingPage() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event: 'page_visit', data: { page: 'Landing Page' } })
     }).catch(() => {})
+  }, [])
+
+  // Online count simulation
+  useEffect(() => {
+    setOnlineCount(Math.floor(Math.random() * 15) + 28) // 28-42
+    const interval = setInterval(() => {
+      setOnlineCount(prev => {
+        const change = Math.random() > 0.5 ? 1 : -1
+        const newVal = prev + change
+        return Math.max(22, Math.min(48, newVal))
+      })
+    }, 7000)
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -278,9 +292,21 @@ export default function LandingPage() {
 
         <div className="container max-w-5xl mx-auto relative z-10">
           <motion.div className="text-center" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <motion.div className="badge badge-primary mb-8" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
+            {/* Social proof badge */}
+            <motion.div className="flex items-center justify-center gap-3 mb-6" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }}>
+              <div className="flex -space-x-2">
+                {['MS', 'RO', 'CM', 'LP'].map((a, i) => (
+                  <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-background border-2 border-background">{a}</div>
+                ))}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <span className="text-primary font-bold">{onlineCount}</span> pessoas fazendo agora
+              </div>
+            </motion.div>
+
+            <motion.div className="badge badge-primary mb-6" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Teste Gratuito + App Life OS por 1 ano</span>
+              <span>Teste Rápido 3 min + App Life OS por 1 ano</span>
             </motion.div>
 
             <h1 className="heading-xl text-balance mb-6">
@@ -296,7 +322,7 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance leading-relaxed">
-              Descubra em <span className="text-foreground font-medium">5 minutos</span> se seu cérebro opera no 
+              Descubra em <span className="text-foreground font-medium">3 minutos</span> se seu cérebro opera no 
               modo TDAH — e receba acesso ao <span className="text-secondary font-medium">Life OS</span>, o app que 
               <span className="text-foreground font-medium"> gamifica sua vida</span> e acaba com a paralisia.
             </p>
@@ -314,7 +340,7 @@ export default function LandingPage() {
             <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary/70" /> 100% gratuito</span>
               <span className="flex items-center gap-1.5"><Gamepad2 className="w-4 h-4 text-secondary/70" /> App Life OS incluso</span>
-              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary/70" /> 5 minutos</span>
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary/70" /> ~3 minutos</span>
             </div>
           </motion.div>
 
