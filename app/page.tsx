@@ -10,52 +10,52 @@ import {
 } from 'lucide-react'
 
 const painPoints = [
-  { icon: Brain, title: "Mil pensamentos, zero ação", description: "Sua mente parece uma TV com 50 canais ligados ao mesmo tempo. Você quer fazer tudo e no final não consegue fazer nada." },
-  { icon: Clock, title: "O tempo simplesmente some", description: "Olha pro relógio: 9h da manhã. Pisca os olhos: 17h. Cadê o seu dia? Você não faz ideia do que aconteceu." },
-  { icon: Target, title: "Paralisia total", description: "Você sabe EXATAMENTE o que precisa fazer. Mas algo te trava. E a culpa que vem depois é brutal." },
-  { icon: RefreshCw, title: "O ciclo sem fim", description: "\"Amanhã vai ser diferente\". Mas amanhã chega e é sempre a mesma história. Todo. Santo. Dia." },
-  { icon: Heart, title: "Relacionamentos sofrendo", description: "As pessoas reclamam que você não presta atenção, esquece tudo, parece que não se importa. Mas você se importa. Muito." },
-  { icon: Zap, title: "Energia desperdiçada", description: "Energia INFINITA pra scrollar redes sociais. Pro que realmente importa? Zero. Nada. Vazio." }
+  { icon: Brain, title: "Sua cabeça não para nunca", description: "É pensamento em cima de pensamento. Você deita pra dormir e a mente fica ligada que nem TV a noite toda. Cansa demais." },
+  { icon: Clock, title: "O dia passa e você não viu", description: "Você olha pro relógio de manhã e quando vê já é de noite. Cadê o dia? Você não sabe onde foi parar." },
+  { icon: Target, title: "Quer fazer mas não consegue", description: "Você SABE o que precisa fazer. Mas parece que tem uma parede entre você e a tarefa. E a culpa depois é horrível." },
+  { icon: RefreshCw, title: "Todo dia é a mesma coisa", description: "\"Amanhã eu começo\". Mas amanhã chega e você faz igual. Parece que você tá preso num ciclo sem fim." },
+  { icon: Heart, title: "As pessoas reclamam de você", description: "Dizem que você não presta atenção, que esquece tudo, que não se importa. Mas você se importa SIM. Muito." },
+  { icon: Zap, title: "Não tem energia pra nada", description: "Pra ficar no celular você consegue. Pra coisa importante? Parece que sua energia acaba. É uma luta todo dia." }
 ]
 
 const symptoms = [
-  "Dificuldade em manter o foco em tarefas chatas",
-  "Procrastinação crônica mesmo sabendo das consequências",
-  "Esquecimentos frequentes de compromissos e objetos",
-  "Dificuldade em seguir instruções com vários passos",
-  "Interromper os outros durante conversas",
-  "Emoções intensas e difíceis de controlar",
-  "Sensação de estar sempre 'correndo atrás'",
-  "Hiperfoco em coisas interessantes, zero foco no resto"
+  "Não consegue prestar atenção em coisa chata",
+  "Deixa tudo pra depois mesmo sabendo que vai dar ruim",
+  "Vive esquecendo das coisas e perdendo objeto",
+  "Quando alguém explica muita coisa de uma vez você se perde",
+  "Corta as pessoas sem querer quando tá empolgado",
+  "Sentimento vem forte demais - raiva, tristeza, tudo intenso",
+  "Sensação de que tá sempre atrasado ou devendo algo",
+  "Consegue focar MUITO em coisa que gosta, mas no resto não"
 ]
 
 const tdahFacts = [
-  { number: "7.4M", label: "Adultos com TDAH no Brasil" },
-  { number: "80%", label: "Não sabem que têm" },
-  { number: "3x", label: "Mais chance de depressão" },
-  { number: "94%", label: "Melhoram com estratégias certas" }
+  { number: "7.4M", label: "de brasileiros adultos têm TDAH" },
+  { number: "80%", label: "nem sabem que têm" },
+  { number: "3x", label: "mais chance de ter depressão" },
+  { number: "94%", label: "melhoram quando entendem o problema" }
 ]
 
 const faqs = [
   { 
-    question: "Isso substitui diagnóstico médico?", 
-    answer: "Não. Este é um teste de autoavaliação baseado em critérios científicos. Ele ajuda você a entender melhor seus sintomas, mas para um diagnóstico oficial, procure um psiquiatra ou neurologista especializado em TDAH." 
+    question: "Esse teste substitui ir no médico?", 
+    answer: "Não, esse teste te ajuda a entender se você tem características de TDAH. Se o resultado mostrar sinais fortes, o ideal é procurar um médico especialista (psiquiatra ou neurologista) pra confirmar." 
   },
   { 
-    question: "Quanto tempo leva o teste?", 
-    answer: "Cerca de 3 minutos. São 12 perguntas diretas que vão te fazer refletir sobre padrões de comportamento que você talvez nunca tenha percebido antes." 
+    question: "Demora muito pra fazer?", 
+    answer: "Não! São só 12 perguntas rápidas, leva uns 3 minutinhos. Você responde do celular mesmo, de qualquer lugar." 
   },
   { 
-    question: "O teste é realmente gratuito?", 
-    answer: "Sim, 100% gratuito. Você recebe um relatório personalizado gerado por inteligência artificial no final, sem pagar nada." 
+    question: "É de graça mesmo ou vai cobrar depois?", 
+    answer: "É 100% de graça, não pede cartão, não cobra nada. Você faz o teste e recebe seu resultado personalizado sem pagar nenhum centavo." 
   },
   { 
-    question: "Por que devo fazer esse teste?", 
-    answer: "Milhões de adultos têm TDAH sem saber. Entender como seu cérebro funciona é o primeiro passo para parar de se culpar e começar a usar estratégias que funcionam para você." 
+    question: "Por que eu deveria fazer esse teste?", 
+    answer: "Porque milhões de pessoas vivem se culpando achando que são preguiçosas ou incapazes, quando na verdade o cérebro delas funciona diferente. Entender isso muda tudo." 
   },
   { 
-    question: "TDAH pode aparecer na vida adulta?", 
-    answer: "O TDAH é uma condição que nasce com você, mas muitos só descobrem na vida adulta. Os sintomas podem ter sido mascarados por estratégias compensatórias ou confundidos com 'preguiça' ou 'falta de força de vontade'." 
+    question: "TDAH não é coisa de criança?", 
+    answer: "Muita gente acha isso, mas não é verdade. Você nasce com TDAH, mas muitos só descobrem adulto. A vida toda você pode ter se virado do jeito que dava, achando que era 'defeito' seu." 
   }
 ]
 
@@ -274,42 +274,49 @@ export default function LandingPage() {
 
             <motion.div className="badge badge-primary mb-6" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Teste Gratuito com Relatório por IA</span>
+              <span>Teste Gratuito • Resultado na Hora</span>
             </motion.div>
 
             <h1 className="heading-xl text-balance mb-6">
-              Sua mente parece um{' '}
-              <span className="gradient-primary">navegador</span>
+              Sua cabeça{' '}
+              <span className="gradient-primary">não para</span>
               <br className="hidden sm:block" />
-              com{' '}
+              e você não sabe{' '}
               <span className="relative inline-block">
-                <span className="gradient-primary">47 abas</span>
+                <span className="gradient-primary">por quê?</span>
                 <motion.span className="absolute -bottom-1 left-0 w-full h-1 bg-gradient-to-r from-[hsl(175_85%_45%)] to-[hsl(195_85%_50%)] rounded-full" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.6 }} />
               </span>
-              {' '}abertas?
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance leading-relaxed">
-              Descubra em <span className="text-foreground font-medium">3 minutos</span> se seu cérebro funciona 
-              no modo TDAH — e finalmente entenda{' '}
-              <span className="text-foreground font-medium">por que você é assim</span>.
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 text-balance leading-relaxed">
+              Milhões de brasileiros vivem se culpando, achando que são <span className="text-foreground font-medium">preguiçosos</span> ou <span className="text-foreground font-medium">incapazes</span>. 
+              Mas e se o problema não for você — e sim <span className="text-foreground font-medium">como seu cérebro funciona?</span>
+            </p>
+
+            <p className="text-base text-muted-foreground max-w-xl mx-auto mb-10">
+              Faça o teste e descubra em <span className="text-primary font-bold">3 minutinhos</span> se você tem características de TDAH.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/teste-tdah">
-                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-8 py-4 rounded-xl text-base flex items-center gap-3">
-                  <Brain className="w-5 h-5" />
-                  Fazer o Teste Gratuito
+                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-8 py-5 rounded-xl text-lg flex items-center gap-3 shadow-lg shadow-primary/25">
+                  <Brain className="w-6 h-6" />
+                  Quero Fazer o Teste Agora
                   <ArrowRight className="w-5 h-5" />
                 </motion.button>
               </Link>
             </div>
 
-            <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4 text-primary/70" /> 100% gratuito</span>
-              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-primary/70" /> ~3 minutos</span>
-              <span className="flex items-center gap-1.5"><Sparkles className="w-4 h-4 text-primary/70" /> Relatório com IA</span>
+            <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+              <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-emerald-500" /> De graça</span>
+              <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-amber-500" /> 3 minutinhos</span>
+              <span className="flex items-center gap-2"><Sparkles className="w-4 h-4 text-purple-400" /> Resultado na hora</span>
             </div>
+
+            {/* Extra reassurance for C/D audience */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="mt-6 text-sm text-muted-foreground">
+              <p>✓ Não precisa baixar nada &nbsp;•&nbsp; ✓ Não pede cartão &nbsp;•&nbsp; ✓ Faz pelo celular</p>
+            </motion.div>
           </motion.div>
 
           {/* Scroll indicator */}
@@ -323,14 +330,14 @@ export default function LandingPage() {
       </section>
 
       {/* Pain Points Section */}
-      <section className="py-24 px-4">
+      <section className="py-20 px-4">
         <div className="container max-w-6xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <span className="badge badge-amber mb-4"><AlertCircle className="w-3.5 h-3.5" /> Você se identifica?</span>
-            <h2 className="heading-lg mb-4">A sensação de que{' '}<span className="gradient-warm">algo está errado</span></h2>
+            <span className="badge badge-amber mb-4"><AlertCircle className="w-3.5 h-3.5" /> Isso é sobre você?</span>
+            <h2 className="heading-lg mb-4">Você sente que{' '}<span className="gradient-warm">algo tá errado?</span></h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-              Todo mundo parece conseguir fazer as coisas. Por que você não? 
-              A resposta pode estar no seu cérebro, não na sua vontade.
+              Todo mundo parece dar conta das coisas. Menos você. 
+              <span className="text-foreground"> E se não for culpa sua?</span>
             </p>
           </motion.div>
 
@@ -347,13 +354,17 @@ export default function LandingPage() {
           </div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-12">
-            <p className="text-muted-foreground mb-6">
-              Se você leu isso e sentiu um aperto no peito...{' '}
-              <span className="text-foreground font-medium">você não está sozinho.</span>
-            </p>
+            <div className="p-6 rounded-2xl bg-gradient-to-r from-amber-500/10 to-orange-500/5 border border-amber-500/20 max-w-xl mx-auto mb-8">
+              <p className="text-lg mb-2">
+                🫂 Se você se identificou com alguma coisa aí em cima...
+              </p>
+              <p className="text-muted-foreground">
+                Relaxa, <span className="text-foreground font-medium">você não é o único</span>. E a boa notícia é que tem explicação pra tudo isso.
+              </p>
+            </div>
             <Link href="/teste-tdah">
-              <button className="btn-secondary px-6 py-3 rounded-xl inline-flex items-center gap-2 text-sm">
-                Descobrir se é TDAH <ArrowRight className="w-4 h-4" />
+              <button className="btn-secondary px-8 py-4 rounded-xl inline-flex items-center gap-2 text-base">
+                Fazer o Teste de Graça <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
           </motion.div>
@@ -375,11 +386,12 @@ export default function LandingPage() {
       </section>
 
       {/* Symptoms Checklist */}
-      <section className="py-24 px-4 bg-card/30">
+      <section className="py-20 px-4 bg-card/30">
         <div className="container max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-            <span className="badge badge-primary mb-4"><Activity className="w-3.5 h-3.5" /> Sinais comuns</span>
-            <h2 className="heading-lg mb-4">Quantos desses você <span className="gradient-primary">reconhece em você</span>?</h2>
+            <span className="badge badge-primary mb-4"><Activity className="w-3.5 h-3.5" /> Veja se você se reconhece</span>
+            <h2 className="heading-lg mb-4">Quantas dessas coisas <span className="gradient-primary">parecem com você</span>?</h2>
+            <p className="text-muted-foreground">Vai marcando mentalmente enquanto lê 👇</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-3">
@@ -390,22 +402,27 @@ export default function LandingPage() {
                 whileInView={{ opacity: 1, x: 0 }} 
                 viewport={{ once: true }} 
                 transition={{ delay: index * 0.05 }}
-                className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors"
+                className="flex items-start gap-3 p-4 rounded-xl bg-card border border-border hover:border-primary/30 transition-colors cursor-pointer group"
               >
-                <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                 <span className="text-sm leading-relaxed">{symptom}</span>
               </motion.div>
             ))}
           </div>
 
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-12">
-            <p className="text-lg text-muted-foreground mb-6">
-              Se marcou <span className="text-primary font-bold">4 ou mais</span>, vale a pena investigar.
-            </p>
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/5 border border-primary/20 max-w-lg mx-auto mb-8">
+              <p className="text-lg">
+                Se você marcou <span className="text-primary font-bold">4 ou mais</span>...
+              </p>
+              <p className="text-muted-foreground text-sm mt-1">
+                Não quer dizer que você tem TDAH, mas vale muito a pena investigar melhor.
+              </p>
+            </div>
             <Link href="/teste-tdah">
               <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-8 py-4 rounded-xl text-base inline-flex items-center gap-3">
                 <Brain className="w-5 h-5" />
-                Fazer o Teste Completo
+                Quero Descobrir Mais
                 <ArrowRight className="w-5 h-5" />
               </motion.button>
             </Link>
@@ -414,21 +431,21 @@ export default function LandingPage() {
       </section>
 
       {/* Why Take Test */}
-      <section className="py-24 px-4">
+      <section className="py-20 px-4">
         <div className="container max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <span className="badge badge-secondary mb-4"><Lightbulb className="w-3.5 h-3.5" /> Por que fazer?</span>
-            <h2 className="heading-lg">O primeiro passo é <span className="gradient-secondary">entender</span></h2>
+            <span className="badge badge-secondary mb-4"><Lightbulb className="w-3.5 h-3.5" /> O que você ganha</span>
+            <h2 className="heading-lg">Entender é o <span className="gradient-secondary">primeiro passo</span></h2>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {[
-              { icon: Brain, title: "Pare de se culpar", description: "Quando você entende que seu cérebro funciona diferente, para de se sentir preguiçoso ou incapaz. Não é falta de vontade — é neurologia." },
-              { icon: Target, title: "Encontre o que funciona para VOCÊ", description: "Estratégias genéricas não funcionam para cérebros TDAH. Entender seus padrões é o primeiro passo para encontrar o que realmente ajuda." },
-              { icon: Heart, title: "Melhore seus relacionamentos", description: "Quando você entende o porquê dos seus comportamentos, fica mais fácil explicar para quem você ama — e eles finalmente entendem você." },
-              { icon: Zap, title: "Use seu cérebro a seu favor", description: "TDAH não é só problema. Criatividade, hiperfoco e pensamento 'fora da caixa' são superpoderes quando bem direcionados." }
+              { icon: Brain, title: "Para de se achar preguiçoso", description: "Quando você descobre que seu cérebro funciona diferente, para de se culpar por tudo. Não é falta de vontade — é o jeito que você nasceu." },
+              { icon: Target, title: "Descobre o que funciona pra você", description: "Dica de produtividade normal não funciona pra todo mundo igual. Você vai entender O SEU jeito de fazer as coisas renderem." },
+              { icon: Heart, title: "As pessoas vão te entender melhor", description: "Quando você sabe explicar por que faz certas coisas, quem tá do seu lado para de reclamar e começa a ajudar." },
+              { icon: Zap, title: "Transforma o 'defeito' em vantagem", description: "TDAH não é só problema não. Criatividade, energia, pensamento diferente... tudo isso pode virar seu ponto forte." }
             ].map((item, index) => (
-              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex gap-6 items-start card-elevated p-6 rounded-2xl">
+              <motion.div key={index} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex gap-5 items-start card-elevated p-5 rounded-2xl">
                 <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-secondary/20 to-secondary/5 flex items-center justify-center">
                   <item.icon className="w-6 h-6 text-secondary" />
                 </div>
@@ -443,21 +460,22 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-24 px-4 bg-card/30">
+      <section className="py-20 px-4 bg-card/30">
         <div className="container max-w-4xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <span className="badge badge-primary mb-4"><Zap className="w-3.5 h-3.5" /> Simples e rápido</span>
-            <h2 className="heading-lg">Como funciona o teste</h2>
+            <span className="badge badge-primary mb-4"><Zap className="w-3.5 h-3.5" /> Super fácil</span>
+            <h2 className="heading-lg">Como funciona?</h2>
+            <p className="text-muted-foreground mt-2">Três passinhos e pronto 👇</p>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="space-y-5">
             {[
-              { step: 1, title: "Responda 12 perguntas", description: "Perguntas simples sobre seu dia a dia. Não precisa pensar muito — responda com o que vier à mente." },
-              { step: 2, title: "IA analisa suas respostas", description: "Nossa inteligência artificial identifica padrões e gera um relatório personalizado sobre como seu cérebro funciona." },
-              { step: 3, title: "Receba insights valiosos", description: "Entenda seus pontos fortes e desafios, com dicas práticas para começar a aplicar hoje mesmo." }
+              { step: 1, title: "Responde 12 perguntinhas", description: "Coisas simples do dia a dia. Não precisa ficar pensando muito — responde o que vier na cabeça." },
+              { step: 2, title: "A gente analisa suas respostas", description: "Nosso sistema olha suas respostas e monta um relatório explicando como seu cérebro funciona." },
+              { step: 3, title: "Você recebe seu resultado", description: "Um relatório completo só seu, com dicas que você pode começar a usar HOJE mesmo." }
             ].map((item, index) => (
-              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.12 }} className="flex gap-6 items-start">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-[hsl(195_85%_50%)] flex items-center justify-center text-background font-bold text-lg">
+              <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.12 }} className="flex gap-5 items-start">
+                <div className="flex-shrink-0 w-14 h-14 rounded-full bg-gradient-to-br from-primary to-[hsl(195_85%_50%)] flex items-center justify-center text-background font-bold text-xl shadow-lg shadow-primary/20">
                   {item.step}
                 </div>
                 <div className="card-elevated p-5 rounded-xl flex-1">
@@ -482,24 +500,27 @@ export default function LandingPage() {
               </div>
             </div>
             <p className="text-muted-foreground mb-2">
-              Mais de <span className="text-primary font-bold">2.800 pessoas</span> já fizeram o teste
+              Mais de <span className="text-primary font-bold">2.800 pessoas</span> já fizeram esse teste
             </p>
             <div className="flex justify-center gap-1 mb-6">
               {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />)}
             </div>
-            <p className="text-sm text-muted-foreground italic max-w-lg mx-auto">
-              "Finalmente entendi por que eu sou assim. Chorei lendo o relatório — me senti visto pela primeira vez."
-            </p>
+            <div className="max-w-lg mx-auto p-4 rounded-xl bg-card border border-border">
+              <p className="text-sm text-muted-foreground italic">
+                "Nossa, finalmente entendi por que eu sou assim. Até chorei lendo o resultado — me senti entendido pela primeira vez na vida."
+              </p>
+              <p className="text-xs text-primary mt-2">— Marina, 32 anos</p>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-24 px-4 bg-card/30">
+      <section className="py-20 px-4 bg-card/30">
         <div className="container max-w-3xl mx-auto">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-            <span className="badge badge-primary mb-4"><HelpCircle className="w-3.5 h-3.5" /> Tire suas dúvidas</span>
-            <h2 className="heading-lg mb-2">Perguntas frequentes</h2>
+            <span className="badge badge-primary mb-4"><HelpCircle className="w-3.5 h-3.5" /> Dúvidas?</span>
+            <h2 className="heading-lg mb-2">A gente responde!</h2>
           </motion.div>
 
           <div className="space-y-3">
@@ -521,29 +542,31 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24 px-4">
+      <section className="py-20 px-4">
         <div className="container max-w-3xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <h2 className="heading-lg mb-4">
-              Pronto para{' '}<span className="gradient-primary">entender seu cérebro</span>?
+              E aí, bora{' '}<span className="gradient-primary">descobrir</span>?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-8 leading-relaxed">
-              O primeiro passo é parar de se culpar e começar a se entender. 
-              Faça o teste gratuito e descubra como você funciona.
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-4 leading-relaxed">
+              Chega de ficar se perguntando "o que tem de errado comigo?"
+            </p>
+            <p className="text-muted-foreground max-w-md mx-auto mb-8">
+              Faz o teste, leva 3 minutinhos, é de graça, e você finalmente vai entender algumas coisas.
             </p>
 
             <Link href="/teste-tdah">
-              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-10 py-5 rounded-xl text-lg font-semibold inline-flex items-center gap-3">
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="btn-primary px-10 py-5 rounded-xl text-lg font-semibold inline-flex items-center gap-3 shadow-lg shadow-primary/25">
                 <Brain className="w-6 h-6" />
-                Fazer Meu Teste Gratuito
+                Quero Fazer o Teste Agora
                 <ArrowRight className="w-6 h-6" />
               </motion.button>
             </Link>
 
-            <p className="mt-8 text-sm text-muted-foreground flex flex-wrap justify-center gap-4">
-              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> ~3 minutos</span>
-              <span className="flex items-center gap-1.5"><Shield className="w-4 h-4" /> 100% gratuito</span>
-              <span className="flex items-center gap-1.5"><Users className="w-4 h-4" /> +2.800 pessoas</span>
+            <p className="mt-8 text-sm text-muted-foreground flex flex-wrap justify-center gap-6">
+              <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-amber-500" /> 3 minutinhos</span>
+              <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-emerald-500" /> De graça</span>
+              <span className="flex items-center gap-2"><Users className="w-4 h-4 text-purple-400" /> +2.800 já fizeram</span>
             </p>
           </motion.div>
         </div>
@@ -559,8 +582,8 @@ export default function LandingPage() {
               </div>
               <span className="font-semibold tracking-tight">Mente Caótica</span>
             </div>
-            <p className="text-xs text-muted-foreground text-center">
-              Este teste não substitui diagnóstico médico profissional. Para diagnóstico oficial, procure um especialista.
+            <p className="text-xs text-muted-foreground text-center max-w-md">
+              ⚠️ Esse teste não é diagnóstico médico. Se o resultado mostrar sinais fortes, o ideal é procurar um médico especialista.
             </p>
           </div>
         </div>
