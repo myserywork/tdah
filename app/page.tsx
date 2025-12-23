@@ -51,6 +51,127 @@ const faqs = [
   { question: "Posso pedir reembolso?", answer: "Sim! Você tem 7 dias de garantia incondicional. Se não gostar por qualquer motivo, devolvemos 100% do valor. Sem perguntas." }
 ]
 
+// Animated particles for hero
+const HeroParticles = () => {
+  const particles = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 1,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * 5,
+  }))
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full bg-primary/30"
+          style={{
+            width: p.size,
+            height: p.size,
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            x: [0, Math.random() * 20 - 10, 0],
+            opacity: [0.2, 0.6, 0.2],
+          }}
+          transition={{
+            duration: p.duration,
+            delay: p.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// Neural network lines for hero
+const NeuralLines = () => {
+  const lines = Array.from({ length: 8 }, (_, i) => ({
+    id: i,
+    startX: Math.random() * 100,
+    startY: Math.random() * 100,
+    endX: Math.random() * 100,
+    endY: Math.random() * 100,
+  }))
+
+  return (
+    <svg className="absolute inset-0 w-full h-full opacity-20">
+      <defs>
+        <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(175 85% 45%)" stopOpacity="0" />
+          <stop offset="50%" stopColor="hsl(175 85% 45%)" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="hsl(265 85% 60%)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {lines.map((line) => (
+        <motion.line
+          key={line.id}
+          x1={`${line.startX}%`}
+          y1={`${line.startY}%`}
+          x2={`${line.endX}%`}
+          y2={`${line.endY}%`}
+          stroke="url(#lineGradient)"
+          strokeWidth="1"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: [0, 0.5, 0] }}
+          transition={{
+            duration: 4,
+            delay: line.id * 0.3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </svg>
+  )
+}
+
+// Floating brain icons
+const FloatingIcons = () => {
+  const icons = [
+    { Icon: Brain, x: 10, y: 20, size: 40, delay: 0 },
+    { Icon: Sparkles, x: 85, y: 15, size: 30, delay: 0.5 },
+    { Icon: Zap, x: 5, y: 70, size: 35, delay: 1 },
+    { Icon: Target, x: 90, y: 60, size: 32, delay: 1.5 },
+    { Icon: Lightbulb, x: 15, y: 85, size: 28, delay: 2 },
+    { Icon: Trophy, x: 80, y: 80, size: 36, delay: 2.5 },
+  ]
+
+  return (
+    <>
+      {icons.map((item, i) => (
+        <motion.div
+          key={i}
+          className="absolute text-primary/10"
+          style={{ left: `${item.x}%`, top: `${item.y}%` }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ 
+            opacity: 1, 
+            scale: 1,
+            y: [0, -15, 0],
+            rotate: [0, 5, -5, 0]
+          }}
+          transition={{
+            opacity: { duration: 0.5, delay: item.delay },
+            scale: { duration: 0.5, delay: item.delay },
+            y: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: item.delay },
+            rotate: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: item.delay },
+          }}
+        >
+          <item.Icon size={item.size} />
+        </motion.div>
+      ))}
+    </>
+  )
+}
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
@@ -65,7 +186,88 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative min-h-[92vh] flex items-center px-4 py-20">
-        <div className="container max-w-5xl mx-auto">
+        {/* Hero Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Gradient Mesh */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,hsl(175_85%_45%/0.15),transparent)]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,hsl(265_85%_60%/0.08),transparent_50%)]" />
+          </div>
+          
+          {/* Grid Pattern */}
+          <div 
+            className="absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage: `
+                linear-gradient(hsl(175 85% 45%) 1px, transparent 1px),
+                linear-gradient(90deg, hsl(175 85% 45%) 1px, transparent 1px)
+              `,
+              backgroundSize: '50px 50px',
+            }}
+          />
+          
+          {/* Animated Orbs */}
+          <motion.div
+            className="absolute top-20 left-[20%] w-[300px] h-[300px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, hsl(175 85% 45% / 0.15) 0%, transparent 70%)',
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              x: [0, 30, 0],
+              y: [0, -20, 0],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-20 right-[15%] w-[250px] h-[250px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, hsl(265 85% 60% / 0.12) 0%, transparent 70%)',
+            }}
+            animate={{
+              scale: [1, 1.3, 1],
+              x: [0, -20, 0],
+              y: [0, 30, 0],
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute top-1/2 right-[30%] w-[200px] h-[200px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, hsl(35 95% 55% / 0.08) 0%, transparent 70%)',
+            }}
+            animate={{
+              scale: [1, 1.15, 1],
+              y: [0, -40, 0],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          />
+
+          {/* Neural Network Lines */}
+          <NeuralLines />
+          
+          {/* Floating Particles */}
+          <HeroParticles />
+          
+          {/* Floating Icons */}
+          <FloatingIcons />
+
+          {/* Glowing Ring */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary/5">
+            <motion.div
+              className="absolute inset-0 rounded-full border border-primary/10"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute inset-8 rounded-full border border-secondary/10"
+              animate={{ rotate: -360 }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+        </div>
+
+        <div className="container max-w-5xl mx-auto relative z-10">
           <motion.div className="text-center" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <motion.div className="badge badge-primary mb-8" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
               <Sparkles className="w-3.5 h-3.5" />
