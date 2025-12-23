@@ -192,25 +192,20 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-        {/* Meta Pixel - Must be in body for Next.js */}
+        {/* Meta Pixel Base Code */}
+        <Script id="fb-pixel-base" strategy="beforeInteractive">
+          {`window.fbq||(window.fbq=function(){fbq.callMethod?fbq.callMethod.apply(fbq,arguments):fbq.queue.push(arguments)},window._fbq||(window._fbq=fbq),fbq.push=fbq,fbq.loaded=!0,fbq.version="2.0",fbq.queue=[])`}
+        </Script>
+        {/* Load Facebook SDK */}
         <Script
-          id="fb-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1194474569538928');
-              fbq('track', 'PageView');
-            `,
-          }}
+          id="fb-sdk"
+          src="https://connect.facebook.net/en_US/fbevents.js"
+          strategy="beforeInteractive"
         />
+        {/* Initialize Pixel */}
+        <Script id="fb-pixel-init" strategy="beforeInteractive">
+          {`fbq('init','1194474569538928');fbq('track','PageView');`}
+        </Script>
         <div className="min-h-screen animated-bg noise-overlay">
           {children}
         </div>
