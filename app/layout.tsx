@@ -155,13 +155,6 @@ export default function RootLayout({
           `}
         </Script>
         
-        {/* Meta Pixel noscript fallback */}
-        <noscript
-          dangerouslySetInnerHTML={{
-            __html: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1194474569538928&ev=PageView&noscript=1" />`
-          }}
-        />
-        
         {/* Microsoft Clarity - Heatmaps & Session Recordings */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
