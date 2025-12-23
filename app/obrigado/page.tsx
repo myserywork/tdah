@@ -1,23 +1,25 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { 
   CheckCircle, Mail, Clock, ArrowRight, Download, 
   Gamepad2, BookOpen, Gift, Star, Heart, Shield,
-  MessageCircle, Sparkles, Trophy, Zap, Brain
+  MessageCircle, Sparkles, Trophy, Zap, Brain, Loader2
 } from 'lucide-react'
 import { trackEvents } from '@/lib/gtag'
 
-export default function ObrigadoPage() {
+function ObrigadoContent() {
   const searchParams = useSearchParams()
   const [email, setEmail] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
   const [total, setTotal] = useState('')
+  const [mounted, setMounted] = useState(false)
   
   useEffect(() => {
+    setMounted(true)
     // Get data from URL params
     setEmail(searchParams.get('email') || '')
     setPaymentMethod(searchParams.get('method') || 'pix')
@@ -67,7 +69,7 @@ export default function ObrigadoPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Confetti effect for approved payments */}
-      {paymentMethod === 'credit_card' && (
+      {mounted && paymentMethod === 'credit_card' && (
         <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
           {[...Array(50)].map((_, i) => (
             <motion.div
@@ -79,7 +81,7 @@ export default function ObrigadoPage() {
               }}
               initial={{ y: -20, opacity: 1 }}
               animate={{ 
-                y: window.innerHeight + 20, 
+                y: typeof window !== 'undefined' ? window.innerHeight + 20 : 800, 
                 x: (Math.random() - 0.5) * 200,
                 rotate: Math.random() * 360,
                 opacity: 0 
@@ -289,3 +291,23 @@ export default function ObrigadoPage() {
   )
 }
 
+// Loading fallback component
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="text-center">
+        <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
+        <p className="text-muted-foreground">Carregando...</p>
+      </div>
+    </div>
+  )
+}
+
+// Main page component wrapped with Suspense
+export default function ObrigadoPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ObrigadoContent />
+    </Suspense>
+  )
+}
