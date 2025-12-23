@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Inter } from 'next/font/google'
 import Script from 'next/script'
+import FacebookPixel from '@/components/FacebookPixel'
 import './globals.css'
 
 const inter = Inter({ 
@@ -192,20 +193,8 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-        {/* Meta Pixel Base Code */}
-        <Script id="fb-pixel-base" strategy="beforeInteractive">
-          {`window.fbq||(window.fbq=function(){fbq.callMethod?fbq.callMethod.apply(fbq,arguments):fbq.queue.push(arguments)},window._fbq||(window._fbq=fbq),fbq.push=fbq,fbq.loaded=!0,fbq.version="2.0",fbq.queue=[])`}
-        </Script>
-        {/* Load Facebook SDK */}
-        <Script
-          id="fb-sdk"
-          src="https://connect.facebook.net/en_US/fbevents.js"
-          strategy="beforeInteractive"
-        />
-        {/* Initialize Pixel */}
-        <Script id="fb-pixel-init" strategy="beforeInteractive">
-          {`fbq('init','1194474569538928');fbq('track','PageView');`}
-        </Script>
+        {/* Meta Pixel - Client Component */}
+        <FacebookPixel />
         <div className="min-h-screen animated-bg noise-overlay">
           {children}
         </div>
