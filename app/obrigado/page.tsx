@@ -10,6 +10,7 @@ import {
   MessageCircle, Sparkles, Trophy, Zap, Brain, Loader2
 } from 'lucide-react'
 import { trackEvents } from '@/lib/gtag'
+import { fbPixelEvents } from '@/lib/fbpixel'
 
 function ObrigadoContent() {
   const searchParams = useSearchParams()
@@ -29,7 +30,16 @@ function ObrigadoContent() {
     const totalValue = parseFloat(searchParams.get('total') || '19.90')
     trackEvents.purchaseCompleted(totalValue)
     
-    // Send conversion event
+    // Track purchase in Facebook Pixel - IMPORTANT for ads optimization
+    fbPixelEvents.purchase({ 
+      value: totalValue, 
+      currency: 'BRL',
+      content_name: 'Guia Mente Caótica + Life OS',
+      content_ids: ['guia-mente-caotica', 'life-os'],
+      num_items: 2
+    })
+    
+    // Send conversion event to Google
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'conversion', {
         send_to: 'G-CX2GBYKFPM/purchase',

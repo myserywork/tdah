@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { trackEvents } from '@/lib/gtag'
+import { fbPixelEvents } from '@/lib/fbpixel'
 import { 
   Brain, ArrowRight, ArrowLeft, Sparkles, Heart, Lightbulb, Shield, Clock, Zap, Check,
   Loader2, Phone, User, Target, Lock, AlertTriangle, CheckCircle, BarChart3, Star,
@@ -159,7 +160,13 @@ export default function TesteTDAH() {
       const bm = breathingMoments.find(b => b.afterQuestion === currentQuestion + 1)
       if (bm) { setCurrentBreathing(bm); setStage('breathing'); setBreathingProgress(0) }
       else if (currentQuestion + 1 < questions.length) setCurrentQuestion(currentQuestion + 1)
-      else { setStage('analyzing'); trackEvents.testCompleted(newAnswers.reduce((sum, val) => sum + val, 0)); generateReport(newAnswers) }
+      else { 
+        const finalScore = newAnswers.reduce((sum, val) => sum + val, 0)
+        setStage('analyzing')
+        trackEvents.testCompleted(finalScore)
+        fbPixelEvents.testCompleted(finalScore)
+        generateReport(newAnswers) 
+      }
     }, 300)
   }
 
@@ -193,8 +200,10 @@ export default function TesteTDAH() {
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault(); setIsSubmitting(true)
     
-    // Track lead capture in GA
+    // Track lead capture in GA and Facebook Pixel
     trackEvents.leadCaptured()
+    fbPixelEvents.lead({ content_name: 'Teste TDAH', value: 0, currency: 'BRL' })
+    fbPixelEvents.completeRegistration({ content_name: 'Teste TDAH' })
     
     // Send Discord notification
     try {
@@ -278,7 +287,7 @@ export default function TesteTDAH() {
                 <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary/70" /><span>5-8 min</span></div>
                 <div className="flex items-center gap-2"><Sparkles className="w-4 h-4 text-primary/70" /><span>Relatório com IA</span></div>
               </div>
-              <button onClick={() => { setStage('test'); trackEvents.testStarted(); fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'test_start' }) }).catch(() => {}) }} className="btn-primary px-8 py-4 rounded-xl text-base flex items-center gap-3 mx-auto">Começar Teste <ArrowRight className="w-5 h-5" /></button>
+              <button onClick={() => { setStage('test'); trackEvents.testStarted(); fbPixelEvents.testStarted(); fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'test_start' }) }).catch(() => {}) }} className="btn-primary px-8 py-4 rounded-xl text-base flex items-center gap-3 mx-auto">Começar Teste <ArrowRight className="w-5 h-5" /></button>
             </div>
           </motion.div>
         )}

@@ -12,6 +12,7 @@ import {
   Gamepad2, BookOpen, Video, MessageCircle, Crown, Sparkles, Heart
 } from 'lucide-react'
 import { trackEvents } from '@/lib/gtag'
+import { fbPixelEvents } from '@/lib/fbpixel'
 
 declare global {
   interface Window {
@@ -108,6 +109,7 @@ export default function CheckoutPage() {
   // Track checkout visit
   useEffect(() => {
     trackEvents.checkoutStarted()
+    fbPixelEvents.initiateCheckout({ value: 19.90, currency: 'BRL' })
     fetch('/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
