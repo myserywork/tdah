@@ -176,6 +176,11 @@ export default function TesteTDAH() {
     else { setStage('analyzing'); generateReport(answers) }
   }
 
+  // Track page view on mount
+  useEffect(() => {
+    fbPixelEvents.viewContent({ content_name: 'Teste TDAH', content_ids: ['teste-tdah'] })
+  }, [])
+
   useEffect(() => {
     if (stage === 'breathing') {
       const timer = setInterval(() => {

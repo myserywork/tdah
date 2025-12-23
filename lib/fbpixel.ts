@@ -1,16 +1,41 @@
 export const FB_PIXEL_ID = '1194474569538928'
 
-// Track custom events
+// Helper to check if fbq is ready
+const isFbqReady = (): boolean => {
+  return typeof window !== 'undefined' && typeof (window as any).fbq === 'function'
+}
+
+// Track standard events with retry
 export const event = (name: string, options = {}) => {
-  if (typeof window !== 'undefined' && (window as any).fbq) {
-    (window as any).fbq('track', name, options)
+  const track = () => {
+    if (isFbqReady()) {
+      (window as any).fbq('track', name, options)
+      return true
+    }
+    return false
+  }
+  
+  // Try immediately
+  if (!track()) {
+    // Retry after a short delay if fbq not ready yet
+    setTimeout(() => track(), 500)
+    setTimeout(() => track(), 1500)
   }
 }
 
 // Track custom events with trackCustom
 export const customEvent = (name: string, options = {}) => {
-  if (typeof window !== 'undefined' && (window as any).fbq) {
-    (window as any).fbq('trackCustom', name, options)
+  const track = () => {
+    if (isFbqReady()) {
+      (window as any).fbq('trackCustom', name, options)
+      return true
+    }
+    return false
+  }
+  
+  if (!track()) {
+    setTimeout(() => track(), 500)
+    setTimeout(() => track(), 1500)
   }
 }
 
@@ -19,12 +44,21 @@ export const fbPixelEvents = {
   // Standard Events
   pageView: () => event('PageView'),
   
-  // Lead events
+  // Lead events - IMPORTANT for lead ads
   lead: (data?: { content_name?: string; value?: number; currency?: string }) => 
-    event('Lead', data),
+    event('Lead', {
+      content_name: data?.content_name || 'Teste TDAH',
+      value: data?.value || 0,
+      currency: data?.currency || 'BRL',
+    }),
   
   completeRegistration: (data?: { content_name?: string; value?: number; currency?: string }) => 
-    event('CompleteRegistration', data),
+    event('CompleteRegistration', {
+      content_name: data?.content_name || 'Lead Teste TDAH',
+      value: data?.value || 0,
+      currency: data?.currency || 'BRL',
+      status: 'complete'
+    }),
   
   // Checkout events
   initiateCheckout: (data?: { value?: number; currency?: string; content_ids?: string[]; num_items?: number }) => 
@@ -32,6 +66,7 @@ export const fbPixelEvents = {
       value: data?.value || 19.90,
       currency: data?.currency || 'BRL',
       content_ids: data?.content_ids || ['guia-mente-caotica', 'life-os'],
+      content_type: 'product',
       num_items: data?.num_items || 2,
     }),
   
@@ -40,6 +75,7 @@ export const fbPixelEvents = {
       value: data?.value || 19.90,
       currency: data?.currency || 'BRL',
       content_ids: data?.content_ids || ['guia-mente-caotica', 'life-os'],
+      content_type: 'product',
     }),
   
   // Purchase event - MOST IMPORTANT for conversion tracking
@@ -58,13 +94,13 @@ export const fbPixelEvents = {
     event('ViewContent', {
       content_name: data?.content_name || 'Teste TDAH',
       content_ids: data?.content_ids || ['teste-tdah'],
+      content_type: 'product',
       value: data?.value || 0,
       currency: data?.currency || 'BRL',
     }),
   
   // Custom events for the funnel
-  testStarted: () => customEvent('TestStarted'),
-  testCompleted: (score: number) => customEvent('TestCompleted', { score }),
-  reportViewed: () => customEvent('ReportViewed'),
+  testStarted: () => customEvent('TestStarted', { content_name: 'Teste TDAH' }),
+  testCompleted: (score: number) => customEvent('TestCompleted', { score, content_name: 'Teste TDAH' }),
+  reportViewed: () => customEvent('ReportViewed', { content_name: 'Relatório TDAH' }),
 }
-

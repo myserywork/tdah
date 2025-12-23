@@ -207,6 +207,9 @@ export default function CheckoutPage() {
     e.preventDefault()
     setIsLoading(true)
     setPaymentStatus('processing')
+    
+    // Track payment info added
+    fbPixelEvents.addPaymentInfo({ value: total, currency: 'BRL' })
 
     try {
       let paymentData: any = {
