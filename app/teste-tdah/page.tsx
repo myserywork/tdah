@@ -635,17 +635,19 @@ export default function TesteTDAH() {
                 
                 <div className="relative">
                   <div className="text-center mb-5">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-3">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      Desbloqueie agora - é grátis!
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-3">
+                      <Gift className="w-3.5 h-3.5" />
+                      100% gratuito
                     </div>
-                    <h2 className="text-lg font-bold mb-1">Preencha para ver seu relatório completo</h2>
-                    <p className="text-sm text-muted-foreground">Você receberá insights personalizados + dicas práticas</p>
+                    <h2 className="text-xl font-bold mb-2">Só mais um passinho! 👇</h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Pra gente <span className="text-foreground">personalizar seu relatório</span> e te mandar as <span className="text-foreground">dicas certas</span> pro seu perfil
+                    </p>
                   </div>
 
-                  <form onSubmit={handleSubmitLead} className="space-y-4">
+                  <form onSubmit={handleSubmitLead} className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium mb-1.5">Seu nome</label>
+                      <label className="block text-sm font-medium mb-1.5">Seu primeiro nome</label>
                       <div className="relative">
                         <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <input 
@@ -653,13 +655,13 @@ export default function TesteTDAH() {
                           required 
                           value={formData.name} 
                           onChange={e => setFormData({ ...formData, name: e.target.value })} 
-                          placeholder="Como podemos te chamar?" 
+                          placeholder="Ex: João" 
                           className="w-full pl-12 py-4 text-base rounded-xl" 
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-1.5">Seu WhatsApp (com DDD)</label>
+                      <label className="block text-sm font-medium mb-1.5">Telefone (com DDD)</label>
                       <div className="relative">
                         <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <input 
@@ -672,7 +674,13 @@ export default function TesteTDAH() {
                           className="w-full pl-12 py-4 text-base rounded-xl" 
                         />
                       </div>
-                      <p className="text-[10px] text-muted-foreground mt-1">Ex: (11) 99999-9999</p>
+                    </div>
+                    
+                    {/* Why we need this - light explanation */}
+                    <div className="p-3 rounded-lg bg-muted/30 border border-border/50">
+                      <p className="text-xs text-muted-foreground text-center">
+                        📱 <span className="text-foreground/80">Por que pedimos isso?</span> Pra enviar seu relatório salvo e dicas extras que vão te ajudar. <span className="text-emerald-400">Prometemos: sem spam!</span>
+                      </p>
                     </div>
                     
                     <button 
@@ -684,8 +692,7 @@ export default function TesteTDAH() {
                         <Loader2 className="w-6 h-6 animate-spin" />
                       ) : (
                         <>
-                          <Lock className="w-5 h-5" />
-                          Desbloquear Meu Relatório
+                          Ver Meu Resultado
                           <ArrowRight className="w-5 h-5" />
                         </>
                       )}
@@ -693,12 +700,9 @@ export default function TesteTDAH() {
                   </form>
 
                   {/* Trust signals */}
-                  <div className="mt-5 pt-5 border-t border-border/50">
-                    <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Dados seguros</span>
-                      <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> Sem spam</span>
-                      <span className="flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> Resultado imediato</span>
-                    </div>
+                  <div className="mt-4 flex items-center justify-center gap-4 text-[11px] text-muted-foreground">
+                    <span className="flex items-center gap-1"><Lock className="w-3 h-3" /> Seguro</span>
+                    <span className="flex items-center gap-1"><Zap className="w-3 h-3" /> Resultado na hora</span>
                   </div>
                 </div>
               </motion.div>
