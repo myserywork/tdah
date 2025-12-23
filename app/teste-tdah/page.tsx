@@ -231,6 +231,13 @@ export default function TesteTDAH() {
     fbPixelEvents.viewContent({ content_name: 'Teste TDAH', content_ids: ['teste-tdah'] })
   }, [])
 
+  // Scroll to top when stage changes to result or capture
+  useEffect(() => {
+    if (stage === 'result' || stage === 'capture') {
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    }
+  }, [stage])
+
   const generateReport = async (finalAnswers: number[]) => {
     const score = finalAnswers.reduce((sum, val) => sum + val, 0)
     try {

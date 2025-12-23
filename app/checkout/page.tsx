@@ -106,6 +106,11 @@ export default function CheckoutPage() {
     }
   }, [])
 
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [])
+
   // Track checkout visit
   useEffect(() => {
     trackEvents.checkoutStarted()
