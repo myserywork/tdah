@@ -286,18 +286,121 @@ export default function TesteTDAH() {
   const maxScore = questions.length * 5
   const scorePercentage = Math.round((totalScore / maxScore) * 100)
 
-  // Blurred Preview - Simplified
+  // Blurred Preview - IMPRESSIVE VERSION
   const BlurredPreview = () => {
     const cats = getCategoryScores()
+    const insights = getFriendlyInsights()
     return (
-      <div className="relative">
-        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-background/70 to-background pointer-events-none">
-          <div className="bg-primary/15 backdrop-blur-sm rounded-full p-3 mb-2 border border-primary/20"><Lock className="w-6 h-6 text-primary" /></div>
-          <p className="text-xs text-muted-foreground">Preencha para ver</p>
+      <div className="relative rounded-2xl overflow-hidden">
+        {/* Overlay with lock */}
+        <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-gradient-to-b from-background/40 via-background/60 to-background/90 pointer-events-none">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }} 
+            animate={{ scale: 1, opacity: 1 }} 
+            transition={{ delay: 0.3 }}
+            className="bg-gradient-to-br from-primary to-secondary p-4 rounded-2xl mb-3 shadow-lg shadow-primary/20"
+          >
+            <Lock className="w-8 h-8 text-background" />
+          </motion.div>
+          <motion.p 
+            initial={{ y: 10, opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }} 
+            transition={{ delay: 0.4 }}
+            className="text-lg font-bold text-foreground mb-1"
+          >
+            Seu relatório está pronto!
+          </motion.p>
+          <motion.p 
+            initial={{ y: 10, opacity: 0 }} 
+            animate={{ y: 0, opacity: 1 }} 
+            transition={{ delay: 0.5 }}
+            className="text-sm text-muted-foreground"
+          >
+            Preencha abaixo para desbloquear
+          </motion.p>
         </div>
-        <div className="blur-[6px] select-none pointer-events-none space-y-3">
+        
+        {/* Blurred content - Rich preview */}
+        <div className="blur-[8px] select-none pointer-events-none p-4 space-y-4 bg-card/50 border border-border rounded-2xl">
+          
+          {/* Score header */}
+          <div className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-primary/10 to-secondary/10 border border-primary/20">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+              <span className="text-2xl font-bold text-background">{scorePercentage}%</span>
+            </div>
+            <div>
+              <div className="text-xl font-bold">{getScoreLevel(totalScore).level}</div>
+              <div className="text-sm text-muted-foreground">Nível de compatibilidade TDAH</div>
+            </div>
+          </div>
+
+          {/* Category bars - ALL categories */}
           <div className="p-4 rounded-xl bg-card border border-border">
-            <div className="space-y-2">{cats.slice(0, 3).map((c, i) => (<div key={i}><div className="h-2 bg-muted rounded-full overflow-hidden"><div className={`h-full rounded-full ${c.barClass}`} style={{ width: `${c.percentage}%` }} /></div></div>))}</div>
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 className="w-5 h-5 text-primary" />
+              <span className="font-bold">Análise por Área</span>
+            </div>
+            <div className="space-y-3">
+              {cats.map((c, i) => (
+                <div key={i}>
+                  <div className="flex justify-between text-sm mb-1">
+                    <span className="font-medium">{c.label}</span>
+                    <span className="font-bold" style={{ color: c.color }}>{Math.round(c.percentage)}%</span>
+                  </div>
+                  <div className="h-3 bg-muted rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${c.barClass}`} style={{ width: `${c.percentage}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Insights preview */}
+          <div className="grid grid-cols-2 gap-3">
+            {insights.slice(0, 2).map((ins, i) => {
+              const Icon = iconMap[ins.icon] || Brain
+              return (
+                <div key={i} className="p-4 rounded-xl bg-card border border-border">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                    <Icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div className="font-bold text-sm mb-1">{ins.title}</div>
+                  <div className="text-xs text-muted-foreground line-clamp-2">{ins.description}</div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Quick wins preview */}
+          <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+            <div className="flex items-center gap-2 mb-3">
+              <Zap className="w-5 h-5 text-amber-400" />
+              <span className="font-bold">3 Dicas Práticas para Hoje</span>
+            </div>
+            <div className="space-y-2">
+              {['Técnica dos 2 minutos para começar', 'Sistema de recompensas pessoal', 'Hack do timer de 15 minutos'].map((tip, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm">
+                  <div className="w-5 h-5 rounded-full bg-amber-400/20 flex items-center justify-center text-xs font-bold text-amber-400">{i + 1}</div>
+                  <span>{tip}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Extra content blocks */}
+          <div className="grid grid-cols-3 gap-2">
+            <div className="p-3 rounded-lg bg-card border border-border text-center">
+              <Brain className="w-6 h-6 text-primary mx-auto mb-1" />
+              <div className="text-xs font-medium">Seu Perfil</div>
+            </div>
+            <div className="p-3 rounded-lg bg-card border border-border text-center">
+              <Target className="w-6 h-6 text-secondary mx-auto mb-1" />
+              <div className="text-xs font-medium">Pontos Fortes</div>
+            </div>
+            <div className="p-3 rounded-lg bg-card border border-border text-center">
+              <Trophy className="w-6 h-6 text-amber-400 mx-auto mb-1" />
+              <div className="text-xs font-medium">Plano de Ação</div>
+            </div>
           </div>
         </div>
       </div>
@@ -438,59 +541,152 @@ export default function TesteTDAH() {
           </motion.div>
         )}
 
-        {/* Capture - Simplified */}
+        {/* Capture - IMPACTFUL VERSION */}
         {stage === 'capture' && (
-          <motion.div key="capture" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="min-h-screen flex items-center justify-center p-4 py-8">
-            <div className="max-w-md w-full">
-              {/* Urgency bar */}
-              <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-2 mb-4 text-center">
-                <div className="flex items-center justify-center gap-2 text-red-400 text-sm font-medium">
-                  <Timer className="w-4 h-4" />
-                  Oferta expira em {countdown.minutes}:{countdown.seconds.toString().padStart(2, '0')}
-                </div>
-              </div>
-
-              <div className="text-center mb-5">
-                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-5xl mb-3">🎉</motion.div>
-                <h2 className="text-xl font-bold mb-1">Seu resultado está pronto!</h2>
-                <p className="text-muted-foreground text-sm">Preencha para ver sua análise completa</p>
-              </div>
+          <motion.div key="capture" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-screen py-6 px-4">
+            <div className="max-w-2xl mx-auto">
               
-              {/* Score preview */}
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className={`p-4 rounded-xl ${getScoreLevel(totalScore).bg} ${getScoreLevel(totalScore).border} border mb-4`}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium mb-0.5">Nível identificado</div>
-                    <div className={`text-2xl font-bold ${getScoreLevel(totalScore).color}`}>{getScoreLevel(totalScore).level}</div>
+              {/* Header celebration */}
+              <motion.div 
+                initial={{ opacity: 0, y: -20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                className="text-center mb-6"
+              >
+                <motion.div 
+                  initial={{ scale: 0 }} 
+                  animate={{ scale: 1 }} 
+                  transition={{ type: "spring", bounce: 0.5, delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-4"
+                >
+                  <CheckCircle className="w-4 h-4" />
+                  Teste concluído com sucesso!
+                </motion.div>
+                
+                <motion.h1 
+                  initial={{ opacity: 0, y: 10 }} 
+                  animate={{ opacity: 1, y: 0 }} 
+                  transition={{ delay: 0.3 }}
+                  className="text-2xl md:text-3xl font-bold mb-2"
+                >
+                  Uau! Seu relatório ficou <span className="gradient-primary">incrível</span> 🎉
+                </motion.h1>
+                <motion.p 
+                  initial={{ opacity: 0 }} 
+                  animate={{ opacity: 1 }} 
+                  transition={{ delay: 0.4 }}
+                  className="text-muted-foreground"
+                >
+                  Nossa IA identificou padrões únicos no seu cérebro
+                </motion.p>
+              </motion.div>
+
+              {/* Main content - Blurred preview */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ delay: 0.5 }}
+                className="mb-6"
+              >
+                <BlurredPreview />
+              </motion.div>
+
+              {/* Form card - sticky on mobile */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ delay: 0.6 }}
+                className="card-highlight p-6 rounded-2xl relative overflow-hidden"
+              >
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-secondary/10 rounded-full blur-2xl" />
+                
+                <div className="relative">
+                  <div className="text-center mb-5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium mb-3">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      Desbloqueie agora - é grátis!
+                    </div>
+                    <h2 className="text-lg font-bold mb-1">Preencha para ver seu relatório completo</h2>
+                    <p className="text-sm text-muted-foreground">Você receberá insights personalizados + dicas práticas</p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-3xl font-bold">{scorePercentage}%</div>
-                    <div className="text-xs text-muted-foreground">compatibilidade</div>
+
+                  <form onSubmit={handleSubmitLead} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1.5">Seu nome</label>
+                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                        <input 
+                          type="text" 
+                          required 
+                          value={formData.name} 
+                          onChange={e => setFormData({ ...formData, name: e.target.value })} 
+                          placeholder="Como podemos te chamar?" 
+                          className="w-full pl-12 py-4 text-base rounded-xl" 
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1.5">Seu WhatsApp</label>
+                      <div className="relative">
+                        <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                        <input 
+                          type="tel" 
+                          required 
+                          value={formData.whatsapp} 
+                          onChange={e => setFormData({ ...formData, whatsapp: e.target.value })} 
+                          placeholder="(00) 00000-0000" 
+                          className="w-full pl-12 py-4 text-base rounded-xl" 
+                        />
+                      </div>
+                    </div>
+                    
+                    <button 
+                      type="submit" 
+                      disabled={isSubmitting} 
+                      className="btn-primary w-full py-5 rounded-xl text-lg font-bold flex items-center justify-center gap-3 shadow-lg shadow-primary/20"
+                    >
+                      {isSubmitting ? (
+                        <Loader2 className="w-6 h-6 animate-spin" />
+                      ) : (
+                        <>
+                          <Lock className="w-5 h-5" />
+                          Desbloquear Meu Relatório
+                          <ArrowRight className="w-5 h-5" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+
+                  {/* Trust signals */}
+                  <div className="mt-5 pt-5 border-t border-border/50">
+                    <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> Dados seguros</span>
+                      <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> Sem spam</span>
+                      <span className="flex items-center gap-1.5"><Zap className="w-3.5 h-3.5" /> Resultado imediato</span>
+                    </div>
                   </div>
                 </div>
               </motion.div>
-              
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-5"><BlurredPreview /></motion.div>
-              
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="card-elevated p-5 rounded-xl">
-                <form onSubmit={handleSubmitLead} className="space-y-3">
-                  <div>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                      <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Seu nome" className="w-full pl-11 py-3.5 text-base" />
-                    </div>
+
+              {/* Social proof */}
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                transition={{ delay: 0.8 }}
+                className="text-center mt-6"
+              >
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <div className="flex -space-x-2">
+                    {['MS', 'RO', 'CM', 'LP'].map((a, i) => (
+                      <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-background border-2 border-background">{a}</div>
+                    ))}
                   </div>
-                  <div>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                      <input type="tel" required value={formData.whatsapp} onChange={e => setFormData({ ...formData, whatsapp: e.target.value })} placeholder="WhatsApp (00) 00000-0000" className="w-full pl-11 py-3.5 text-base" />
-                    </div>
-                  </div>
-                  <button type="submit" disabled={isSubmitting} className="btn-primary w-full py-4 rounded-xl text-base font-bold flex items-center justify-center gap-2">
-                    {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <>Ver Meu Resultado <ArrowRight className="w-5 h-5" /></>}
-                  </button>
-                </form>
-                <p className="text-[10px] text-muted-foreground text-center mt-3">🔒 Seus dados estão seguros. Não enviamos spam.</p>
+                  <span className="text-sm text-muted-foreground">+2.800 pessoas já fizeram</span>
+                </div>
+                <div className="flex justify-center gap-0.5">
+                  {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
+                </div>
               </motion.div>
             </div>
           </motion.div>
