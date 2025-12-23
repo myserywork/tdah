@@ -190,7 +190,26 @@ export default function TesteTDAH() {
 
   const handleSubmitLead = async (e: React.FormEvent) => {
     e.preventDefault(); setIsSubmitting(true)
-    await new Promise(r => setTimeout(r, 1000))
+    
+    // Send Discord notification
+    try {
+      await fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'lead_capture',
+          data: {
+            name: formData.name,
+            whatsapp: formData.whatsapp,
+            score: totalScore,
+            level: getScoreLevel(totalScore).level,
+            topCategory: getTopCategory()
+          }
+        })
+      })
+    } catch (e) { console.error(e) }
+    
+    await new Promise(r => setTimeout(r, 500))
     setIsSubmitting(false); setStage('result')
   }
 
@@ -254,7 +273,7 @@ export default function TesteTDAH() {
                 <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-primary/70" /><span>5-8 min</span></div>
                 <div className="flex items-center gap-2"><Sparkles className="w-4 h-4 text-primary/70" /><span>Relatório com IA</span></div>
               </div>
-              <button onClick={() => setStage('test')} className="btn-primary px-8 py-4 rounded-xl text-base flex items-center gap-3 mx-auto">Começar Teste <ArrowRight className="w-5 h-5" /></button>
+              <button onClick={() => { setStage('test'); fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'test_start' }) }).catch(() => {}) }} className="btn-primary px-8 py-4 rounded-xl text-base flex items-center gap-3 mx-auto">Começar Teste <ArrowRight className="w-5 h-5" /></button>
             </div>
           </motion.div>
         )}

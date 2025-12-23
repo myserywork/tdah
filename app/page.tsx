@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { 
@@ -174,6 +174,15 @@ const FloatingIcons = () => {
 
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  // Track page visit
+  useEffect(() => {
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'page_visit', data: { page: 'Landing Page' } })
+    }).catch(() => {})
+  }, [])
 
   return (
     <main className="relative overflow-hidden">

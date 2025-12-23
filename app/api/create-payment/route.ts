@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { MercadoPagoConfig, Payment, Preference } from 'mercadopago'
+import { notifyPayment } from '@/lib/discord'
 
 const client = new MercadoPagoConfig({ 
   accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN || '' 
@@ -52,6 +53,17 @@ export async function POST(req: NextRequest) {
         }
       })
 
+      // Send Discord notification
+      await notifyPayment({
+        name,
+        email,
+        amount: total,
+        method: 'pix',
+        status: result.status || 'pending',
+        paymentId: result.id?.toString(),
+        orderBumps
+      })
+
       return NextResponse.json({
         success: true,
         paymentId: result.id,
@@ -86,6 +98,17 @@ export async function POST(req: NextRequest) {
         }
       })
 
+      // Send Discord notification
+      await notifyPayment({
+        name,
+        email,
+        amount: total,
+        method: 'credit_card',
+        status: result.status || 'pending',
+        paymentId: result.id?.toString(),
+        orderBumps
+      })
+
       return NextResponse.json({
         success: true,
         paymentId: result.id,
@@ -117,6 +140,17 @@ export async function POST(req: NextRequest) {
 
       // Cast to any to access barcode property that exists in API but not in types
       const resultAny = result as any
+
+      // Send Discord notification
+      await notifyPayment({
+        name,
+        email,
+        amount: total,
+        method: 'boleto',
+        status: result.status || 'pending',
+        paymentId: result.id?.toString(),
+        orderBumps
+      })
 
       return NextResponse.json({
         success: true,

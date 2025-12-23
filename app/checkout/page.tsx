@@ -101,6 +101,15 @@ export default function CheckoutPage() {
     }
   }, [])
 
+  // Track checkout visit
+  useEffect(() => {
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'checkout_visit' })
+    }).catch(() => {})
+  }, [])
+
   const handleMPLoad = () => {
     setMpReady(true)
   }
@@ -829,4 +838,5 @@ export default function CheckoutPage() {
     </>
   )
 }
+
 
