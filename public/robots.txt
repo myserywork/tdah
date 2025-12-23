@@ -1,0 +1,14 @@
+# Robots.txt for Mente Caótica
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.mentecaotica.com.br/sitemap.xml
+
+# Block API routes from indexing
+Disallow: /api/
+
+# Allow Google to crawl everything else
+User-agent: Googlebot
+Allow: /
+

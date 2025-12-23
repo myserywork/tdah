@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import Script from 'next/script'
+import { useRouter } from 'next/navigation'
 import { 
   Brain, Shield, Lock, CreditCard, Smartphone, FileText, Check, ChevronDown,
   ShieldCheck, Fingerprint, Clock, Star, Zap, Gift, Users, Headphones,
   ArrowRight, Loader2, Copy, CheckCircle, AlertCircle, Timer, Trophy,
   Gamepad2, BookOpen, Video, MessageCircle, Crown, Sparkles, Heart
 } from 'lucide-react'
+import { trackEvents } from '@/lib/gtag'
 
 declare global {
   interface Window {
@@ -57,6 +59,7 @@ const testimonialsMini = [
 ]
 
 export default function CheckoutPage() {
+  const router = useRouter()
   const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'pix' | 'boleto'>('credit_card')
   const [selectedBumps, setSelectedBumps] = useState<Record<string, boolean>>({})
   const [isLoading, setIsLoading] = useState(false)
@@ -67,6 +70,7 @@ export default function CheckoutPage() {
   const [mpReady, setMpReady] = useState(false)
   const [cardForm, setCardForm] = useState<any>(null)
   const [installments, setInstallments] = useState(1)
+  const [paymentId, setPaymentId] = useState<string | null>(null)
   
   // Form data
   const [formData, setFormData] = useState({
@@ -103,6 +107,7 @@ export default function CheckoutPage() {
 
   // Track checkout visit
   useEffect(() => {
+    trackEvents.checkoutStarted()
     fetch('/api/track', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -110,8 +115,48 @@ export default function CheckoutPage() {
     }).catch(() => {})
   }, [])
 
+  // Redirect to thank you page on successful payment
+  const redirectToThankYou = (method: string, id?: string) => {
+    const params = new URLSearchParams({
+      email: formData.email,
+      method,
+      total: total.toFixed(2),
+      ...(id && { payment_id: id })
+    })
+    router.push(`/obrigado?${params.toString()}`)
+  }
+
   const handleMPLoad = () => {
     setMpReady(true)
+  }
+
+  // Poll for PIX payment confirmation
+  const startPollingPayment = (paymentIdToPoll: string) => {
+    let attempts = 0
+    const maxAttempts = 60 // Poll for 5 minutes (5 second intervals)
+    
+    const pollInterval = setInterval(async () => {
+      attempts++
+      
+      try {
+        const response = await fetch(`/api/check-payment?payment_id=${paymentIdToPoll}`)
+        const data = await response.json()
+        
+        if (data.approved) {
+          clearInterval(pollInterval)
+          trackEvents.purchaseCompleted(total)
+          redirectToThankYou('pix', paymentIdToPoll)
+        } else if (attempts >= maxAttempts) {
+          clearInterval(pollInterval)
+          // Keep showing PIX code - user can still pay
+        }
+      } catch (error) {
+        console.error('Polling error:', error)
+      }
+    }, 5000) // Check every 5 seconds
+    
+    // Cleanup on component unmount
+    return () => clearInterval(pollInterval)
   }
 
   const formatCPF = (value: string) => {
@@ -201,19 +246,30 @@ export default function CheckoutPage() {
       const result = await response.json()
 
       if (result.success) {
+        setPaymentId(result.paymentId?.toString())
+        
         if (paymentMethod === 'pix' && result.qrCode) {
           setPixData({ qrCode: result.qrCode, qrCodeBase64: result.qrCodeBase64 })
           setPaymentStatus('success')
+          // Start polling for payment confirmation
+          startPollingPayment(result.paymentId)
         } else if (paymentMethod === 'boleto' && result.boletoUrl) {
           setBoletoData({ url: result.boletoUrl, barcode: result.barcode })
           setPaymentStatus('success')
+          // Redirect after showing boleto info
+          setTimeout(() => {
+            redirectToThankYou('boleto', result.paymentId?.toString())
+          }, 3000)
         } else if (result.status === 'approved') {
-          setPaymentStatus('success')
+          // Credit card approved - redirect immediately
+          trackEvents.purchaseCompleted(total)
+          redirectToThankYou('credit_card', result.paymentId?.toString())
         } else {
           setPaymentStatus('processing')
         }
       } else {
         setPaymentStatus('error')
+        trackEvents.purchaseFailed(result.error || 'Unknown error')
       }
     } catch (error) {
       console.error(error)
