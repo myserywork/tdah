@@ -115,12 +115,15 @@ export async function POST(req: NextRequest) {
         }
       })
 
+      // Cast to any to access barcode property that exists in API but not in types
+      const resultAny = result as any
+
       return NextResponse.json({
         success: true,
         paymentId: result.id,
         status: result.status,
         boletoUrl: result.transaction_details?.external_resource_url,
-        barcode: result.barcode?.content
+        barcode: resultAny.barcode?.content
       })
     }
 
