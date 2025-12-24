@@ -20,39 +20,6 @@ declare global {
   }
 }
 
-const orderBumps = [
-  {
-    id: 'coaching',
-    title: '🔥 Sessão de Coaching 1:1',
-    description: '30 minutos comigo para montar seu plano personalizado',
-    originalPrice: 197,
-    price: 47,
-    discount: '76% OFF',
-    icon: Video,
-    badge: 'Mais vendido'
-  },
-  {
-    id: 'community',
-    title: '👥 Comunidade VIP no Discord',
-    description: 'Acesso vitalício ao grupo exclusivo de suporte',
-    originalPrice: 97,
-    price: 27,
-    discount: '72% OFF',
-    icon: Users,
-    badge: 'Suporte 24/7'
-  },
-  {
-    id: 'templates',
-    title: '📋 Pack de Templates Premium',
-    description: 'Notion, Obsidian e planilhas prontas para usar',
-    originalPrice: 67,
-    price: 17,
-    discount: '75% OFF',
-    icon: FileText,
-    badge: 'Bônus extra'
-  }
-]
-
 const testimonialsMini = [
   { name: 'Mariana S.', text: 'Valeu cada centavo! Mudou minha vida.' },
   { name: 'Rafael O.', text: 'A melhor decisão que tomei esse ano.' },
@@ -62,7 +29,6 @@ const testimonialsMini = [
 export default function CheckoutPage() {
   const router = useRouter()
   const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'pix' | 'boleto'>('credit_card')
-  const [selectedBumps, setSelectedBumps] = useState<Record<string, boolean>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle')
   const [pixData, setPixData] = useState<{ qrCode: string; qrCodeBase64: string } | null>(null)
@@ -89,15 +55,8 @@ export default function CheckoutPage() {
     holder: ''
   })
 
-  // Calculate totals
-  const basePrice = 19.90
-  const bumpsTotal = Object.entries(selectedBumps)
-    .filter(([_, selected]) => selected)
-    .reduce((sum, [id]) => {
-      const bump = orderBumps.find(b => b.id === id)
-      return sum + (bump?.price || 0)
-    }, 0)
-  const total = basePrice + bumpsTotal
+  // Price
+  const total = 19.90
 
   // Initialize MercadoPago
   useEffect(() => {
@@ -198,10 +157,6 @@ export default function CheckoutPage() {
       .slice(0, 5)
   }
 
-  const toggleBump = (id: string) => {
-    setSelectedBumps(prev => ({ ...prev, [id]: !prev[id] }))
-  }
-
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
     setCopied(true)
@@ -219,12 +174,11 @@ export default function CheckoutPage() {
     try {
       let paymentData: any = {
         paymentMethod,
-        amount: basePrice,
+        amount: total,
         email: formData.email,
         name: formData.name,
         cpf: formData.cpf,
-        phone: formData.phone,
-        orderBumps: selectedBumps
+        phone: formData.phone
       }
 
       // For credit card, we need to tokenize first
@@ -379,59 +333,6 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
-
-              {/* Order Bumps */}
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="space-y-4"
-              >
-                <h2 className="text-lg font-bold flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-amber-400" />
-                  Turbine seu resultado
-                  <span className="badge badge-amber text-[10px]">Oferta única</span>
-                </h2>
-                
-                {orderBumps.map((bump, i) => (
-                  <motion.div
-                    key={bump.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
-                    onClick={() => toggleBump(bump.id)}
-                    className={`relative p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                      selectedBumps[bump.id] 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-border hover:border-primary/50 bg-card'
-                    }`}
-                  >
-                    {bump.badge && (
-                      <span className="absolute -top-2 right-4 px-2 py-0.5 rounded-full bg-amber-500 text-[10px] font-bold text-black">
-                        {bump.badge}
-                      </span>
-                    )}
-                    <div className="flex items-start gap-4">
-                      <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                        selectedBumps[bump.id] ? 'border-primary bg-primary' : 'border-muted-foreground/30'
-                      }`}>
-                        {selectedBumps[bump.id] && <Check className="w-4 h-4 text-background" />}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-bold text-sm">{bump.title}</span>
-                          <span className="px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px] font-bold">{bump.discount}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground mb-2">{bump.description}</p>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-muted-foreground line-through">R$ {bump.originalPrice}</span>
-                          <span className="text-lg font-bold text-primary">+ R$ {bump.price}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
               </motion.div>
 
               {/* Payment Form */}
@@ -685,33 +586,31 @@ export default function CheckoutPage() {
                   Resumo do Pedido
                 </h3>
 
-                <div className="space-y-3 mb-4">
+                <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Guia + Life OS (1 ano)</span>
-                    <span>R$ {basePrice.toFixed(2)}</span>
+                    <span className="text-muted-foreground">Guia Mente Caótica</span>
+                    <span className="line-through text-muted-foreground">R$ 97,00</span>
                   </div>
-                  
-                  {Object.entries(selectedBumps).filter(([_, v]) => v).map(([id]) => {
-                    const bump = orderBumps.find(b => b.id === id)
-                    return bump && (
-                      <div key={id} className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">{bump.title.replace(/[🔥👥📋]/g, '').trim()}</span>
-                        <span className="text-primary">+ R$ {bump.price.toFixed(2)}</span>
-                      </div>
-                    )
-                  })}
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">App Life OS (1 ano)</span>
+                    <span className="line-through text-muted-foreground">R$ 197,00</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Bônus Exclusivos</span>
+                    <span className="line-through text-muted-foreground">R$ 97,00</span>
+                  </div>
                 </div>
 
                 <div className="border-t border-border pt-4 mb-4">
                   <div className="flex justify-between items-center">
                     <span className="font-bold">Total</span>
                     <div className="text-right">
-                      <div className="text-xs text-muted-foreground line-through">R$ {(391 + bumpsTotal).toFixed(2)}</div>
+                      <div className="text-xs text-muted-foreground line-through">R$ 391,00</div>
                       <div className="text-2xl font-bold text-primary">R$ {total.toFixed(2)}</div>
                     </div>
                   </div>
                   <div className="text-xs text-emerald-400 text-right mt-1">
-                    Você economiza R$ {(391 - basePrice).toFixed(2)}!
+                    Você economiza R$ 371,10!
                   </div>
                 </div>
 
