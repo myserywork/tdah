@@ -66,6 +66,7 @@
   html {
     scroll-behavior: smooth;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-tap-highlight-color: transparent;
   }
   
   body {
@@ -77,7 +78,40 @@
       radial-gradient(ellipse 60% 60% at 0% 100%, hsl(40 40% 10% / 0.2), transparent 50%),
       hsl(var(--background));
     min-height: 100vh;
+    min-height: 100dvh;
+    overscroll-behavior: none;
   }
+}
+
+/* Mobile Safe Area Support */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Mobile-optimized scrolling */
+.scroll-smooth {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent pull-to-refresh on mobile */
+.no-overscroll {
+  overscroll-behavior: none;
+}
+
+/* Touch feedback */
+.touch-highlight {
+  -webkit-tap-highlight-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Full height accounting for mobile browser bars */
+.h-screen-safe {
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* Typography System */

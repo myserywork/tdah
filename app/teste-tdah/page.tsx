@@ -234,17 +234,40 @@ export default function TesteTDAH() {
     }
   }, [stage])
 
-  // Scroll chat to bottom
-  const scrollToBottom = () => {
+  // Smooth scroll chat to bottom with animation
+  const scrollToBottom = useCallback(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
+      const container = chatContainerRef.current
+      const targetScroll = container.scrollHeight
+      
+      // Smooth scroll animation
+      container.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth'
+      })
     }
-  }
+  }, [])
+
+  // Scroll to bottom after render
+  useEffect(() => {
+    if (chatMessages.length > 0 || isTyping) {
+      const timer = setTimeout(scrollToBottom, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [chatMessages, isTyping, scrollToBottom])
+
+  // Vibrate on mobile (haptic feedback)
+  const vibrate = useCallback((pattern: number | number[] = 10) => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(pattern)
+    }
+  }, [])
 
   // Add AI message with typing effect
   const addAIMessage = async (content: string, delay: number = 1000) => {
     setIsTyping(true)
     setShowOptions(false)
+    scrollToBottom()
     await new Promise(r => setTimeout(r, delay))
     
     setChatMessages(prev => [...prev, {
@@ -254,6 +277,9 @@ export default function TesteTDAH() {
       timestamp: new Date()
     }])
     setIsTyping(false)
+    
+    // Small delay then scroll
+    await new Promise(r => setTimeout(r, 50))
     scrollToBottom()
   }
 
@@ -261,14 +287,15 @@ export default function TesteTDAH() {
   const showQuestion = async (questionIndex: number) => {
     const q = questions[questionIndex]
     
-    // Show intro message first
-    await addAIMessage(q.aiIntro, 600)
-    await new Promise(r => setTimeout(r, 400))
+    // Show intro message first (shorter for mobile)
+    await addAIMessage(q.aiIntro, 400)
+    await new Promise(r => setTimeout(r, 300))
     
     // Show the actual question
-    await addAIMessage(q.question, 800)
+    await addAIMessage(q.question, 600)
     
-    // Show options
+    // Show options with scroll
+    await new Promise(r => setTimeout(r, 200))
     setShowOptions(true)
     scrollToBottom()
   }
@@ -276,21 +303,24 @@ export default function TesteTDAH() {
   // Start the chat test
   const startChatTest = async () => {
     setStage('test')
+    vibrate(50) // Haptic feedback
     trackEvents.testStarted()
     fbPixelEvents.testStarted()
     fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'test_start' }) }).catch(() => {})
     
-    // Initial AI messages
-    await addAIMessage("Olá! 👋 Eu sou a ARIA, assistente de avaliação neurológica.", 500)
-    await addAIMessage("Vou aplicar uma avaliação baseada em escalas clínicas validadas (ASRS e critérios do DSM-5).", 1200)
-    await addAIMessage("São apenas 12 perguntas rápidas. Responda com sinceridade — não existe resposta certa ou errada.", 1200)
-    await new Promise(r => setTimeout(r, 500))
+    // Initial AI messages - faster for better UX
+    await addAIMessage("Olá! 👋 Eu sou a ARIA, sua assistente.", 400)
+    await addAIMessage("Vou fazer 12 perguntas rápidas baseadas em escalas clínicas (ASRS/DSM-5).", 800)
+    await addAIMessage("Responda com sinceridade — não existe resposta certa ou errada! 💙", 800)
+    await new Promise(r => setTimeout(r, 400))
     
     // Show first question
     showQuestion(0)
   }
 
   const handleAnswer = (value: number) => {
+    vibrate(15) // Quick haptic feedback
+    
     const newAnswers = [...answers]
     newAnswers[currentQuestion] = value
     setAnswers(newAnswers)
@@ -306,20 +336,25 @@ export default function TesteTDAH() {
       timestamp: new Date()
     }])
     
+    // Scroll after user message
+    setTimeout(scrollToBottom, 50)
+    
     // Show feedback and next question
     setTimeout(async () => {
-      // Add empathetic feedback
+      // Add empathetic feedback (faster)
       const feedback = getRandomFeedback(value)
-      await addAIMessage(feedback, 800)
+      await addAIMessage(feedback, 500)
       
       if (currentQuestion + 1 < questions.length) {
-        setCurrentQuestion(currentQuestion + 1)
-        await new Promise(r => setTimeout(r, 300))
-        showQuestion(currentQuestion + 1)
+        const nextQ = currentQuestion + 1
+        setCurrentQuestion(nextQ)
+        await new Promise(r => setTimeout(r, 200))
+        showQuestion(nextQ)
       } else { 
-        // Test complete
-        await addAIMessage("Perfeito! Recebi todas as suas respostas. 🎉", 800)
-        await addAIMessage("Agora vou analisar seu perfil com nossa IA...", 600)
+        // Test complete - celebratory vibration
+        vibrate([50, 50, 50])
+        await addAIMessage("Perfeito! Recebi todas as suas respostas. 🎉", 600)
+        await addAIMessage("Preparando sua análise personalizada...", 500)
         
         const finalScore = newAnswers.reduce((sum, val) => sum + val, 0)
         setStage('analyzing')
@@ -327,7 +362,7 @@ export default function TesteTDAH() {
         fbPixelEvents.testCompleted(finalScore)
         generateReport(newAnswers) 
       }
-    }, 400)
+    }, 300)
   }
 
   // Track page view on mount
@@ -682,101 +717,117 @@ export default function TesteTDAH() {
           </motion.div>
         )}
 
-        {/* Test - Chat Interface */}
+        {/* Test - Chat Interface - MOBILE OPTIMIZED */}
         {stage === 'test' && (
-          <motion.div key="test" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950">
+          <motion.div key="test" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="h-[100dvh] flex flex-col bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 overflow-hidden">
             
-            {/* Chat Header - Fixed */}
-            <div className="sticky top-0 z-50 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center gap-3 shadow-lg">
+            {/* Chat Header - Fixed with safe area */}
+            <div className="sticky top-0 z-50 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center gap-3 shadow-lg safe-area-top">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Bot className="w-5 h-5 text-white" />
               </div>
-              <div className="flex-1">
-                <div className="font-semibold text-white">ARIA</div>
-                <div className="text-xs text-blue-100">Assistente de Avaliação</div>
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold text-white text-sm">ARIA</div>
+                <div className="text-[10px] text-blue-100 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Avaliação em andamento
+                </div>
               </div>
               
-              {/* Progress indicator */}
-              <div className="text-right">
-                <div className="text-sm font-medium text-white">{currentQuestion + 1}/{questions.length}</div>
-                <div className="w-20 h-1.5 bg-white/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-white rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
+              {/* Progress indicator - more visual */}
+              <div className="text-right flex-shrink-0">
+                <div className="text-xs font-bold text-white mb-1">{currentQuestion + 1} de {questions.length}</div>
+                <div className="w-24 h-2 bg-white/20 rounded-full overflow-hidden">
+                  <motion.div 
+                    className="h-full bg-white rounded-full" 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${progress}%` }}
+                    transition={{ duration: 0.3 }}
+                  />
                 </div>
               </div>
             </div>
             
-            {/* Chat Messages */}
+            {/* Chat Messages - Scrollable area */}
             <div 
               ref={chatContainerRef}
-              className="flex-1 overflow-y-auto px-4 py-6 space-y-4"
-              style={{ paddingBottom: showOptions ? '200px' : '100px' }}
+              className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 space-y-3 scroll-smooth"
+              style={{ 
+                paddingBottom: showOptions ? '280px' : '80px',
+                WebkitOverflowScrolling: 'touch'
+              }}
             >
               <AnimatePresence mode="popLayout">
                 {chatMessages.map((msg) => (
                   <motion.div
                     key={msg.id}
-                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                    initial={{ opacity: 0, y: 15, scale: 0.98 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className={`flex gap-3 ${msg.type === 'user' ? 'justify-end' : ''}`}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className={`flex gap-2 ${msg.type === 'user' ? 'justify-end' : ''}`}
                   >
                     {msg.type === 'ai' && (
-                      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Bot className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                       </div>
                     )}
-                    <div className={`rounded-2xl px-4 py-2.5 max-w-[85%] ${
+                    <div className={`rounded-2xl px-4 py-3 max-w-[82%] shadow-sm ${
                       msg.type === 'ai' 
-                        ? 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-tl-md text-slate-700 dark:text-slate-200' 
-                        : 'bg-blue-600 text-white rounded-tr-md'
+                        ? 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-tl-sm text-slate-700 dark:text-slate-200' 
+                        : 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-tr-sm'
                     }`}>
-                      <p className="text-sm leading-relaxed">{msg.content}</p>
+                      <p className="text-[15px] leading-relaxed">{msg.content}</p>
                     </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
               
-              {/* Typing indicator */}
+              {/* Typing indicator - better animation */}
               {isTyping && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex gap-3"
+                  exit={{ opacity: 0 }}
+                  className="flex gap-2"
                 >
-                  <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
-                    <Bot className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl rounded-tl-md px-4 py-3">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
+                    <div className="flex gap-1.5">
+                      <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0ms', animationDuration: '0.6s' }} />
+                      <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '150ms', animationDuration: '0.6s' }} />
+                      <span className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '300ms', animationDuration: '0.6s' }} />
                     </div>
                   </div>
                 </motion.div>
               )}
             </div>
             
-            {/* Answer Options - Fixed at bottom */}
+            {/* Answer Options - Fixed at bottom with safe area */}
             <AnimatePresence>
               {showOptions && (
                 <motion.div
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 50 }}
-                  className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 px-4 py-4 space-y-2"
+                  exit={{ opacity: 0, y: 100 }}
+                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                  className="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg border-t border-slate-200 dark:border-slate-700 px-4 pt-4 pb-6 safe-area-bottom"
                 >
-                  <p className="text-xs text-center text-slate-500 dark:text-slate-400 mb-3">Escolha sua resposta:</p>
-                  <div className="grid grid-cols-1 gap-2 max-w-lg mx-auto">
+                  <p className="text-xs text-center text-slate-500 dark:text-slate-400 mb-3 font-medium">
+                    Toque para responder:
+                  </p>
+                  <div className="grid grid-cols-1 gap-2.5 max-w-md mx-auto">
                     {answerOptions.map((o, i) => (
                       <motion.button
                         key={o.value}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.05 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04, type: "spring", damping: 20 }}
                         onClick={() => handleAnswer(o.value)}
-                        className={`w-full py-3 px-4 rounded-xl border-2 text-left font-medium transition-all ${o.color}`}
+                        whileTap={{ scale: 0.97 }}
+                        className={`w-full py-4 px-5 rounded-2xl border-2 text-left font-semibold text-[15px] transition-all active:scale-[0.98] ${o.color}`}
                       >
                         {o.label}
                       </motion.button>
