@@ -231,9 +231,9 @@ export default function TesteTDAH() {
     fbPixelEvents.viewContent({ content_name: 'Teste TDAH', content_ids: ['teste-tdah'] })
   }, [])
 
-  // Scroll to top when stage changes to result or capture
+  // Scroll to top when stage changes to result
   useEffect(() => {
-    if (stage === 'result' || stage === 'capture') {
+    if (stage === 'result') {
       window.scrollTo({ top: 0, behavior: 'instant' })
     }
   }, [stage])
@@ -247,7 +247,7 @@ export default function TesteTDAH() {
       })
       if (response.ok) setReport(await response.json())
     } catch (e) { console.error(e) }
-    finally { setStage('capture') }
+    finally { setStage('result') } // Go directly to result, skip capture
   }
 
   const handleSubmitLead = async (e: React.FormEvent) => {
@@ -748,7 +748,7 @@ export default function TesteTDAH() {
                   )}
 
                   <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                    {formData.name}, agora eu preciso que você<br />
+                    Ei, agora eu preciso que você<br />
                     <span className="gradient-primary">leia isso com atenção</span>
                   </motion.h1>
                   
@@ -892,7 +892,7 @@ export default function TesteTDAH() {
                   <span className="badge badge-amber mb-4"><Zap className="w-3.5 h-3.5" /> Seu Plano de Ação Imediata</span>
                   <h2 className="text-3xl md:text-4xl font-bold mb-4">🎁 BÔNUS: Seu Guia de <span className="gradient-warm">Primeiros Passos</span></h2>
                   <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    {formData.name}, antes de continuar, quero te dar algo <span className="text-foreground font-bold">de graça</span>. 
+                    Antes de continuar, quero te dar algo <span className="text-foreground font-bold">de graça</span>. 
                     São 5 técnicas científicas que você pode começar a usar <span className="text-amber-400 font-bold">nos próximos 10 minutos</span>.
                   </p>
                 </motion.div>
@@ -1266,7 +1266,7 @@ export default function TesteTDAH() {
               <div className="max-w-3xl mx-auto">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
                   <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                    {formData.name}, eu preciso ser <span className="text-red-400">honesto</span> com você
+                    Eu preciso ser <span className="text-red-400">honesto</span> com você
                   </h2>
                 </motion.div>
 
@@ -1520,7 +1520,7 @@ export default function TesteTDAH() {
               <div className="max-w-2xl mx-auto text-center">
                 <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                   <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                    {formData.name}, a escolha é sua.
+                    A escolha é sua.
                   </h2>
                   <p className="text-lg text-muted-foreground mb-8">
                     Você pode continuar lutando sozinho contra um cérebro que você não entende...<br />
