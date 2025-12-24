@@ -767,8 +767,32 @@ export default function TesteTDAH() {
         {stage === 'result' && report && (
           <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen">
             
+            {/* ========== STICKY CTA BAR ========== */}
+            <motion.div 
+              initial={{ y: -100 }} 
+              animate={{ y: 0 }} 
+              transition={{ delay: 2, type: "spring" }}
+              className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-primary to-emerald-500 py-3 px-4 shadow-lg"
+            >
+              <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
+                <div className="hidden sm:block text-background text-sm font-medium">
+                  🎁 Oferta especial: <span className="font-bold">R$ 19,90</span> (de R$ 391)
+                </div>
+                <div className="flex-1 sm:flex-none">
+                  <Link href="/checkout">
+                    <button className="w-full sm:w-auto bg-background text-primary font-bold px-6 py-2.5 rounded-lg text-sm hover:bg-background/90 transition-all shadow-md">
+                      GARANTIR AGORA →
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Spacer for sticky bar */}
+            <div className="h-14" />
+            
             {/* ========== HERO: EMOTIONAL CONNECTION ========== */}
-            <section className="relative py-12 px-4 overflow-hidden">
+            <section className="relative py-10 px-4 overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent" />
               <div className="max-w-3xl mx-auto relative">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
@@ -802,10 +826,26 @@ export default function TesteTDAH() {
                     </div>
                   </motion.div>
 
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className={`inline-block px-6 py-3 rounded-xl ${getScoreLevel(totalScore).bg} ${getScoreLevel(totalScore).border} border`}>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className={`inline-block px-6 py-3 rounded-xl ${getScoreLevel(totalScore).bg} ${getScoreLevel(totalScore).border} border mb-8`}>
                     <p className="text-sm">
                       <span className="font-bold">Compatibilidade com TDAH:</span>{' '}
                       <span className={`font-bold ${getScoreLevel(totalScore).color}`}>{getScoreLevel(totalScore).level}</span>
+                    </p>
+                  </motion.div>
+
+                  {/* EARLY CTA - Right after score */}
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="bg-gradient-to-r from-primary/10 to-emerald-500/10 border border-primary/30 rounded-2xl p-6 max-w-md mx-auto">
+                    <p className="text-lg font-bold mb-2">🎯 Quer saber como lidar com isso?</p>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Preparei um plano completo pra você por apenas <span className="text-primary font-bold">R$ 19,90</span>
+                    </p>
+                    <Link href="/checkout">
+                      <button className="btn-primary w-full py-4 rounded-xl font-bold text-base">
+                        Ver o Plano Completo →
+                      </button>
+                    </Link>
+                    <p className="text-xs text-muted-foreground mt-3 text-center">
+                      ✓ Garantia de 7 dias • ✓ Acesso imediato
                     </p>
                   </motion.div>
                 </motion.div>
@@ -897,370 +937,137 @@ export default function TesteTDAH() {
                   <h2 className="text-2xl md:text-3xl font-bold">O que isso <span className="gradient-secondary">significa pra você</span></h2>
                 </motion.div>
 
-                <div className="space-y-4">
-                  {getFriendlyInsights().map((ins, i) => {
+                <div className="space-y-4 mb-8">
+                  {getFriendlyInsights().slice(0, 2).map((ins, i) => {
                     const Icon = iconMap[ins.icon] || Brain
                     return (
-                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-6 rounded-xl bg-card border border-border">
+                      <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="p-5 rounded-xl bg-card border border-border">
                         <div className="flex gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0">
-                            <Icon className="w-6 h-6 text-primary" />
+                          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-5 h-5 text-primary" />
                           </div>
                           <div>
-                            <h4 className="font-bold text-lg mb-2">{ins.title}</h4>
-                            <p className="text-muted-foreground leading-relaxed">{ins.description}</p>
+                            <h4 className="font-bold mb-1">{ins.title}</h4>
+                            <p className="text-muted-foreground text-sm leading-relaxed">{ins.description}</p>
                           </div>
                         </div>
                       </motion.div>
                     )
                   })}
                 </div>
+
+                {/* MID-PAGE CTA */}
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="text-center p-6 rounded-2xl bg-gradient-to-r from-secondary/10 to-primary/10 border border-secondary/30">
+                  <p className="text-lg font-bold mb-2">💡 Quer aprender a lidar com TUDO isso?</p>
+                  <p className="text-sm text-muted-foreground mb-4">Tenho um método completo por apenas R$ 19,90</p>
+                  <Link href="/checkout">
+                    <button className="btn-primary px-8 py-3 rounded-xl font-bold">
+                      Quero o Método Completo →
+                    </button>
+                  </Link>
+                </motion.div>
               </div>
             </section>
 
-            {/* ========== QUICK WINS: Comece HOJE - MEGA SEÇÃO ========== */}
-            <section className="py-16 px-4 bg-gradient-to-b from-amber-500/5 via-orange-500/3 to-transparent">
-              <div className="max-w-4xl mx-auto">
-                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-                  <span className="badge badge-amber mb-4"><Zap className="w-3.5 h-3.5" /> Seu Plano de Ação Imediata</span>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">🎁 BÔNUS: Seu Guia de <span className="gradient-warm">Primeiros Passos</span></h2>
-                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                    Antes de continuar, quero te dar algo <span className="text-foreground font-bold">de graça</span>. 
-                    São 5 técnicas científicas que você pode começar a usar <span className="text-amber-400 font-bold">nos próximos 10 minutos</span>.
+            {/* ========== OFFER SECTION - DIRETO AO PONTO ========== */}
+            <section className="py-12 px-4 bg-gradient-to-b from-primary/5 to-transparent">
+              <div className="max-w-2xl mx-auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                    E agora? <span className="gradient-primary">O que você faz com isso?</span>
+                  </h2>
+                  <p className="text-muted-foreground">
+                    Você pode fechar essa página e continuar do mesmo jeito...<br />
+                    <span className="text-foreground font-medium">Ou pode dar o próximo passo.</span>
                   </p>
                 </motion.div>
 
-                {/* Técnica 1 - Regra dos 2 Minutos */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8">
-                  <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/30 relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-6xl opacity-10">⚡</div>
-                    
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0 text-white font-bold text-xl shadow-lg shadow-amber-500/30">1</div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <h3 className="text-xl md:text-2xl font-bold">A Regra dos 2 Minutos</h3>
-                          <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium">⏱️ Resultado em 1 dia</span>
-                        </div>
-                        <p className="text-amber-300/80 font-medium">Elimina 80% da procrastinação instantaneamente</p>
+                {/* The Offer */}
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="bg-gradient-to-br from-card to-card/50 border-2 border-primary/30 rounded-3xl p-6 md:p-8 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+                  
+                  <div className="relative">
+                    <div className="text-center mb-6">
+                      <span className="inline-block px-4 py-1.5 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold mb-4">
+                        🎁 OFERTA ESPECIAL
+                      </span>
+                      <h3 className="text-2xl font-bold mb-2">Guia Mente Caótica + App Life OS</h3>
+                      <p className="text-muted-foreground text-sm">Tudo que você precisa pra dominar seu cérebro</p>
+                    </div>
+
+                    {/* What's included */}
+                    <div className="space-y-3 mb-6">
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/5">
+                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span className="text-sm">Guia completo com 47+ técnicas práticas</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/5">
+                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span className="text-sm">App Life OS por 1 ano (gamifica sua rotina)</span>
+                      </div>
+                      <div className="flex items-center gap-3 p-3 rounded-lg bg-primary/5">
+                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                        <span className="text-sm">Templates + Áudios de foco + Bônus</span>
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-bold text-amber-300 mb-3 flex items-center gap-2"><span className="text-lg">🧠</span> Por que funciona:</h4>
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                          Seu cérebro TDAH tem dificuldade em iniciar tarefas porque superestima o esforço necessário. 
-                          Quando você diz "só 2 minutos", você <span className="text-foreground">engana a resistência inicial</span>. 
-                          E uma vez que começa, a inércia trabalha A SEU FAVOR.
-                        </p>
-                        
-                        <h4 className="font-bold text-amber-300 mb-3 flex items-center gap-2"><span className="text-lg">📋</span> Como aplicar:</h4>
-                        <ol className="space-y-2 text-sm">
-                          <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">1.</span><span className="text-muted-foreground">Olhe sua lista de tarefas (ou pense no que está adiando)</span></li>
-                          <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">2.</span><span className="text-muted-foreground">Pergunte: "Qual o PRIMEIRO passo que leva menos de 2 min?"</span></li>
-                          <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">3.</span><span className="text-muted-foreground">Faça APENAS esse passo. Sem compromisso com o resto.</span></li>
-                          <li className="flex items-start gap-2"><span className="text-amber-400 font-bold">4.</span><span className="text-muted-foreground">Depois de 2 min, decida se quer continuar ou parar.</span></li>
-                        </ol>
+                    {/* Price */}
+                    <div className="text-center mb-6">
+                      <div className="flex items-center justify-center gap-3 mb-2">
+                        <span className="text-lg text-muted-foreground line-through">R$ 391,00</span>
+                        <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-xs font-bold">-95%</span>
                       </div>
-                      
-                      <div className="bg-background/50 rounded-xl p-4">
-                        <h4 className="font-bold text-amber-300 mb-3 flex items-center gap-2"><span className="text-lg">💡</span> Exemplo prático:</h4>
-                        <div className="space-y-3 text-sm">
-                          <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                            <p className="text-red-400 font-medium mb-1">❌ Como você pensa agora:</p>
-                            <p className="text-muted-foreground">"Preciso arrumar o quarto todo... depois faço"</p>
-                          </div>
-                          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                            <p className="text-emerald-400 font-medium mb-1">✅ Com a Regra dos 2 Minutos:</p>
-                            <p className="text-muted-foreground">"Vou só juntar as roupas do chão. Só isso. 2 minutos."</p>
-                          </div>
-                        </div>
-                        <p className="text-xs text-amber-300/60 mt-3 italic">* Em 90% das vezes você vai continuar depois dos 2 min porque já "entrou no modo"</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Técnica 2 - Âncoras Visuais */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8">
-                  <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/30 relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-6xl opacity-10">👁️</div>
-                    
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center flex-shrink-0 text-white font-bold text-xl shadow-lg shadow-cyan-500/30">2</div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <h3 className="text-xl md:text-2xl font-bold">Sistema de Âncoras Visuais</h3>
-                          <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium">🧠 Reduz esquecimentos em 70%</span>
-                        </div>
-                        <p className="text-cyan-300/80 font-medium">O segredo para nunca mais esquecer compromissos</p>
-                      </div>
+                      <div className="text-5xl font-bold text-primary mb-1">R$ 19,90</div>
+                      <p className="text-xs text-muted-foreground">Pagamento único • Acesso imediato</p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-bold text-cyan-300 mb-3 flex items-center gap-2"><span className="text-lg">🧠</span> A ciência por trás:</h4>
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                          Pessoas com TDAH têm dificuldade com "memória prospectiva" (lembrar de fazer algo no futuro). 
-                          Mas nossa <span className="text-foreground">memória visual é EXCELENTE</span>. 
-                          Âncoras visuais transferem a tarefa de "lembrar" para o ambiente.
-                        </p>
-                        
-                        <h4 className="font-bold text-cyan-300 mb-3 flex items-center gap-2"><span className="text-lg">🎯</span> As 3 regras de ouro:</h4>
-                        <ul className="space-y-2 text-sm">
-                          <li className="flex items-start gap-2"><span className="text-cyan-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">Visível = Lembrado.</span> Se não está na sua vista, não existe.</span></li>
-                          <li className="flex items-start gap-2"><span className="text-cyan-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">No caminho = Feito.</span> Coloque no lugar que você VAI passar.</span></li>
-                          <li className="flex items-start gap-2"><span className="text-cyan-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">Estranho = Notado.</span> Quanto mais fora do normal, mais você nota.</span></li>
-                        </ul>
-                      </div>
-                      
-                      <div className="bg-background/50 rounded-xl p-4">
-                        <h4 className="font-bold text-cyan-300 mb-3 flex items-center gap-2"><span className="text-lg">🔧</span> Setup rápido (5 min):</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-start gap-2 p-2 rounded bg-cyan-500/10">
-                            <span className="text-cyan-400 font-bold">→</span>
-                            <span className="text-muted-foreground"><span className="text-foreground">Remédios:</span> Na frente da cafeteira ou escova de dentes</span>
-                          </div>
-                          <div className="flex items-start gap-2 p-2 rounded bg-cyan-500/10">
-                            <span className="text-cyan-400 font-bold">→</span>
-                            <span className="text-muted-foreground"><span className="text-foreground">Chaves/carteira:</span> Bandeja colorida na entrada (SEMPRE ali)</span>
-                          </div>
-                          <div className="flex items-start gap-2 p-2 rounded bg-cyan-500/10">
-                            <span className="text-cyan-400 font-bold">→</span>
-                            <span className="text-muted-foreground"><span className="text-foreground">Levar algo:</span> Coloque NA PORTA de saída (literal)</span>
-                          </div>
-                          <div className="flex items-start gap-2 p-2 rounded bg-cyan-500/10">
-                            <span className="text-cyan-400 font-bold">→</span>
-                            <span className="text-muted-foreground"><span className="text-foreground">Tarefas urgentes:</span> Post-it no monitor/espelho</span>
-                          </div>
-                        </div>
-                        <p className="text-xs text-cyan-300/60 mt-3 italic">* Dica: Use cores diferentes para urgências diferentes</p>
-                      </div>
+                    {/* CTA */}
+                    <Link href="/checkout">
+                      <button className="btn-primary w-full py-5 rounded-xl text-lg font-bold shadow-lg shadow-primary/30 mb-4">
+                        QUERO COMEÇAR AGORA →
+                      </button>
+                    </Link>
+
+                    {/* Trust */}
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
+                      <span className="flex items-center gap-1"><Shield className="w-3.5 h-3.5 text-emerald-400" /> Garantia 7 dias</span>
+                      <span className="flex items-center gap-1"><Lock className="w-3.5 h-3.5 text-emerald-400" /> Pagamento seguro</span>
+                      <span className="flex items-center gap-1"><Zap className="w-3.5 h-3.5 text-amber-400" /> Acesso imediato</span>
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Técnica 3 - Dopamine Menu */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8">
-                  <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-purple-500/10 to-pink-500/5 border border-purple-500/30 relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-6xl opacity-10">🍭</div>
-                    
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0 text-white font-bold text-xl shadow-lg shadow-purple-500/30">3</div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <h3 className="text-xl md:text-2xl font-bold">O Menu de Dopamina</h3>
-                          <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium">🎮 Transforma tédio em energia</span>
-                        </div>
-                        <p className="text-purple-300/80 font-medium">Como recarregar quando está "travado"</p>
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-bold text-purple-300 mb-3 flex items-center gap-2"><span className="text-lg">🧠</span> O problema real:</h4>
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                          Quando você está "sem energia" para fazer nada, seu cérebro está com <span className="text-foreground">dopamina baixa</span>. 
-                          Você instintivamente busca redes sociais/jogos — mas isso drena MAIS dopamina. 
-                          O Menu de Dopamina são atividades que <span className="text-foreground">RECARREGAM de verdade</span>.
-                        </p>
-                        
-                        <h4 className="font-bold text-purple-300 mb-3 flex items-center gap-2"><span className="text-lg">📝</span> Crie seu menu agora:</h4>
-                        <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs">+3</div>
-                            <span className="text-muted-foreground"><span className="text-foreground">Alta energia:</span> Exercício, dança, banho gelado</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded bg-amber-500/20 flex items-center justify-center text-amber-400 text-xs">+2</div>
-                            <span className="text-muted-foreground"><span className="text-foreground">Média energia:</span> Música, conversa, cozinhar</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded bg-cyan-500/20 flex items-center justify-center text-cyan-400 text-xs">+1</div>
-                            <span className="text-muted-foreground"><span className="text-foreground">Baixa energia:</span> Alongar, sol, água gelada</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-background/50 rounded-xl p-4">
-                        <h4 className="font-bold text-purple-300 mb-3 flex items-center gap-2"><span className="text-lg">⚡</span> Quando usar:</h4>
-                        <div className="space-y-3 text-sm">
-                          <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                            <p className="text-red-400 font-medium mb-1">🚫 ARMADILHAS (parecem boas, mas drenam):</p>
-                            <p className="text-muted-foreground text-xs">Scroll infinito, YouTube sem fim, comparação social, comer açúcar</p>
-                          </div>
-                          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                            <p className="text-emerald-400 font-medium mb-1">✅ RECARGAS REAIS (10-15 min):</p>
-                            <p className="text-muted-foreground text-xs">Andar no sol, música alta dançando, conversa com amigo, banho</p>
-                          </div>
-                        </div>
-                        <div className="mt-4 p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                          <p className="text-purple-300 text-sm">💡 <span className="font-bold">Hack:</span> Cole seu Menu de Dopamina na parede. Quando travar, CONSULTE antes de pegar o celular.</p>
-                        </div>
-                      </div>
+                {/* Testimonial */}
+                <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mt-8 p-4 rounded-xl bg-card/50 border border-border">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-xs font-bold text-background flex-shrink-0">MS</div>
+                    <div>
+                      <p className="text-sm text-muted-foreground italic mb-2">"Chorei lendo o guia. Pela primeira vez alguém me entendeu. O app virou meu melhor amigo!"</p>
+                      <p className="text-xs text-primary font-medium">— Mariana S., 32 anos</p>
                     </div>
                   </div>
                 </motion.div>
+              </div>
+            </section>
 
-                {/* Técnica 4 - Body Doubling */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8">
-                  <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/30 relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-6xl opacity-10">👥</div>
-                    
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0 text-white font-bold text-xl shadow-lg shadow-emerald-500/30">4</div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <h3 className="text-xl md:text-2xl font-bold">Body Doubling (Presença Paralela)</h3>
-                          <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium">👤 Multiplica foco por 3x</span>
-                        </div>
-                        <p className="text-emerald-300/80 font-medium">O hack mais subestimado para TDAH</p>
-                      </div>
-                    </div>
+            {/* ========== FINAL CTA ========== */}
+            <section className="py-12 px-4">
+              <div className="max-w-xl mx-auto text-center">
+                <h2 className="text-xl md:text-2xl font-bold mb-4">
+                  Você chegou até aqui por um motivo.
+                </h2>
+                <p className="text-muted-foreground mb-6">
+                  Não deixa essa oportunidade passar. Por <span className="text-primary font-bold">R$ 19,90</span> você pode mudar tudo.
+                </p>
+                <Link href="/checkout">
+                  <button className="btn-primary px-10 py-5 rounded-xl text-lg font-bold">
+                    GARANTIR MINHA VAGA →
+                  </button>
+                </Link>
+              </div>
+            </section>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-bold text-emerald-300 mb-3 flex items-center gap-2"><span className="text-lg">🧠</span> Por que é mágico:</h4>
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                          Ter outra pessoa presente (mesmo que não esteja ajudando) ativa áreas do cérebro relacionadas à 
-                          <span className="text-foreground"> responsabilidade social</span>. É como ter um "empurrão" constante sem esforço.
-                          Funciona até com <span className="text-foreground">estranhos na internet</span>.
-                        </p>
-                        
-                        <h4 className="font-bold text-emerald-300 mb-3 flex items-center gap-2"><span className="text-lg">🛠️</span> Formas de usar:</h4>
-                        <ul className="space-y-2 text-sm">
-                          <li className="flex items-start gap-2"><span className="text-emerald-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">Presencial:</span> Trabalhe no mesmo cômodo que alguém</span></li>
-                          <li className="flex items-start gap-2"><span className="text-emerald-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">Videochamada:</span> Câmera ligada com amigo trabalhando</span></li>
-                          <li className="flex items-start gap-2"><span className="text-emerald-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">Virtual:</span> Lives de "Study With Me" no YouTube</span></li>
-                          <li className="flex items-start gap-2"><span className="text-emerald-400">•</span><span className="text-muted-foreground"><span className="text-foreground font-medium">Café/biblioteca:</span> Ambiente com outras pessoas focadas</span></li>
-                        </ul>
-                      </div>
-                      
-                      <div className="bg-background/50 rounded-xl p-4">
-                        <h4 className="font-bold text-emerald-300 mb-3 flex items-center gap-2"><span className="text-lg">🎯</span> Setup em 2 minutos:</h4>
-                        <div className="space-y-3 text-sm">
-                          <div className="p-3 rounded-lg bg-emerald-500/10">
-                            <p className="text-emerald-300 font-medium mb-1">🔍 Procure no YouTube:</p>
-                            <p className="text-muted-foreground">"Study with me" ou "Work with me ADHD"</p>
-                          </div>
-                          <div className="p-3 rounded-lg bg-emerald-500/10">
-                            <p className="text-emerald-300 font-medium mb-1">📱 Apps gratuitos:</p>
-                            <p className="text-muted-foreground">Focusmate, Flow Club (sessões com estranhos)</p>
-                          </div>
-                        </div>
-                        <p className="text-xs text-emerald-300/60 mt-3 italic">* Pessoas com TDAH relatam ser 2-4x mais produtivas com body doubling</p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Técnica 5 - Regra do Próximo Passo Físico */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-8">
-                  <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-rose-500/10 to-red-500/5 border border-rose-500/30 relative overflow-hidden">
-                    <div className="absolute top-4 right-4 text-6xl opacity-10">🦶</div>
-                    
-                    <div className="flex items-start gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-red-500 flex items-center justify-center flex-shrink-0 text-white font-bold text-xl shadow-lg shadow-rose-500/30">5</div>
-                      <div>
-                        <div className="flex flex-wrap items-center gap-2 mb-2">
-                          <h3 className="text-xl md:text-2xl font-bold">A Regra do Próximo Passo FÍSICO</h3>
-                          <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-medium">🎯 Destrói paralisia de decisão</span>
-                        </div>
-                        <p className="text-rose-300/80 font-medium">Quando você não sabe por onde começar</p>
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-bold text-rose-300 mb-3 flex items-center gap-2"><span className="text-lg">🧠</span> O bloqueio explicado:</h4>
-                        <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                          "Fazer o projeto" não é uma tarefa — é um <span className="text-foreground">conceito abstrato</span>. 
-                          Seu cérebro TDAH TRAVA em abstrações. A solução? Transformar tudo em 
-                          <span className="text-foreground"> ações físicas concretas</span> que uma criança entenderia.
-                        </p>
-                        
-                        <h4 className="font-bold text-rose-300 mb-3 flex items-center gap-2"><span className="text-lg">🔑</span> A pergunta mágica:</h4>
-                        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20">
-                          <p className="text-lg font-bold text-center text-rose-300">
-                            "Qual é a PRIMEIRA ação FÍSICA<br />que eu preciso fazer?"
-                          </p>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2 text-center">* Física = envolve mover seu corpo de alguma forma</p>
-                      </div>
-                      
-                      <div className="bg-background/50 rounded-xl p-4">
-                        <h4 className="font-bold text-rose-300 mb-3 flex items-center gap-2"><span className="text-lg">📝</span> Transformando tarefas:</h4>
-                        <div className="space-y-3 text-sm">
-                          <div className="grid grid-cols-2 gap-2">
-                            <div className="p-2 rounded bg-red-500/10 text-center">
-                              <p className="text-red-400 text-xs mb-1">❌ Abstrato</p>
-                              <p className="text-muted-foreground text-xs">"Fazer exercício"</p>
-                            </div>
-                            <div className="p-2 rounded bg-emerald-500/10 text-center">
-                              <p className="text-emerald-400 text-xs mb-1">✅ Físico</p>
-                              <p className="text-muted-foreground text-xs">"Colocar tênis"</p>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2">
-                            <div className="p-2 rounded bg-red-500/10 text-center">
-                              <p className="text-red-400 text-xs mb-1">❌ Abstrato</p>
-                              <p className="text-muted-foreground text-xs">"Estudar"</p>
-                            </div>
-                            <div className="p-2 rounded bg-emerald-500/10 text-center">
-                              <p className="text-emerald-400 text-xs mb-1">✅ Físico</p>
-                              <p className="text-muted-foreground text-xs">"Abrir o livro na página X"</p>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2">
-                            <div className="p-2 rounded bg-red-500/10 text-center">
-                              <p className="text-red-400 text-xs mb-1">❌ Abstrato</p>
-                              <p className="text-muted-foreground text-xs">"Responder emails"</p>
-                            </div>
-                            <div className="p-2 rounded bg-emerald-500/10 text-center">
-                              <p className="text-emerald-400 text-xs mb-1">✅ Físico</p>
-                              <p className="text-muted-foreground text-xs">"Abrir Gmail e clicar no 1º email"</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Bônus: Combinando as técnicas */}
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="mb-8">
-                  <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-secondary/20 to-primary/10 border border-secondary/40 relative overflow-hidden">
-                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-secondary/20 rounded-full blur-3xl" />
-                    
-                    <div className="relative">
-                      <div className="text-center mb-6">
-                        <span className="text-3xl mb-2 block">🏆</span>
-                        <h3 className="text-xl md:text-2xl font-bold mb-2">BÔNUS: A Fórmula Completa</h3>
-                        <p className="text-muted-foreground">Combine as 5 técnicas em uma rotina poderosa</p>
-                      </div>
-
-                      <div className="grid md:grid-cols-5 gap-3 text-center">
-                        <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                          <span className="text-2xl block mb-1">⚡</span>
-                          <p className="text-xs font-bold text-amber-300">2 Minutos</p>
-                          <p className="text-[10px] text-muted-foreground">Comece pequeno</p>
-                        </div>
-                        <div className="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
-                          <span className="text-2xl block mb-1">👁️</span>
-                          <p className="text-xs font-bold text-cyan-300">Âncoras</p>
-                          <p className="text-[10px] text-muted-foreground">Ambiente ajuda</p>
-                        </div>
-                        <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20">
-                          <span className="text-2xl block mb-1">🍭</span>
-                          <p className="text-xs font-bold text-purple-300">Dopamina</p>
-                          <p className="text-[10px] text-muted-foreground">Recarregue certo</p>
-                        </div>
-                        <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
-                          <span className="text-2xl block mb-1">👥</span>
-                          <p className="text-xs font-bold text-emerald-300">Body Double</p>
-                          <p className="text-[10px] text-muted-foreground">Presença ajuda</p>
-                        </div>
+            {/* Keep some remaining sections but much shorter */}
                         <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
                           <span className="text-2xl block mb-1">🦶</span>
                           <p className="text-xs font-bold text-rose-300">Passo Físico</p>
