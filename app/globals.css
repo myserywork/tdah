@@ -11,50 +11,50 @@
 
 @layer base {
   :root {
-    /* Base - Cooler, more sophisticated */
-    --background: 225 25% 5%;
-    --foreground: 210 20% 98%;
+    /* Base - Warmer dark, mais acolhedor para classe C/D */
+    --background: 240 15% 8%;
+    --foreground: 60 10% 96%;
 
-    /* Cards & Surfaces */
-    --card: 225 20% 8%;
-    --card-foreground: 210 20% 98%;
-    --popover: 225 20% 8%;
-    --popover-foreground: 210 20% 98%;
+    /* Cards & Surfaces - Mais claros e aconchegantes */
+    --card: 240 12% 12%;
+    --card-foreground: 60 10% 96%;
+    --popover: 240 12% 12%;
+    --popover-foreground: 60 10% 96%;
 
-    /* Primary - Electric Cyan */
-    --primary: 175 85% 45%;
-    --primary-foreground: 225 25% 5%;
+    /* Primary - Verde mais amigável */
+    --primary: 160 70% 45%;
+    --primary-foreground: 240 15% 8%;
 
-    /* Secondary - Vivid Purple */
-    --secondary: 265 85% 60%;
-    --secondary-foreground: 210 20% 98%;
+    /* Secondary - Roxo mais suave */
+    --secondary: 270 60% 58%;
+    --secondary-foreground: 60 10% 96%;
 
-    /* Accent - Warm Amber */
-    --accent: 35 95% 55%;
-    --accent-foreground: 225 25% 5%;
+    /* Accent - Amarelo quente */
+    --accent: 40 95% 55%;
+    --accent-foreground: 240 15% 8%;
 
-    /* Muted */
-    --muted: 225 15% 12%;
-    --muted-foreground: 220 10% 50%;
+    /* Muted - Mais visível */
+    --muted: 240 10% 16%;
+    --muted-foreground: 240 5% 55%;
 
     /* Destructive */
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 60 10% 96%;
 
     /* Borders & Inputs */
-    --border: 225 15% 15%;
-    --input: 225 15% 10%;
-    --ring: 175 85% 45%;
+    --border: 240 10% 20%;
+    --input: 240 12% 14%;
+    --ring: 160 70% 45%;
 
     --radius: 0.875rem;
 
     /* Custom Colors */
-    --cyan: 175 85% 45%;
-    --purple: 265 85% 60%;
-    --amber: 35 95% 55%;
-    --emerald: 160 75% 45%;
-    --rose: 350 80% 55%;
-    --blue: 215 90% 55%;
+    --cyan: 175 70% 45%;
+    --purple: 270 60% 58%;
+    --amber: 40 95% 55%;
+    --emerald: 160 70% 45%;
+    --rose: 350 75% 55%;
+    --blue: 215 85% 55%;
   }
 }
 
@@ -72,9 +72,9 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Outfit', system-ui, sans-serif;
     background: 
-      radial-gradient(ellipse 100% 100% at 50% -30%, hsl(175 60% 8% / 0.6), transparent 70%),
-      radial-gradient(ellipse 80% 60% at 100% 100%, hsl(265 40% 8% / 0.4), transparent 60%),
-      radial-gradient(ellipse 60% 60% at 0% 100%, hsl(215 40% 6% / 0.3), transparent 50%),
+      radial-gradient(ellipse 100% 100% at 50% -30%, hsl(160 50% 12% / 0.5), transparent 70%),
+      radial-gradient(ellipse 80% 60% at 100% 100%, hsl(270 40% 12% / 0.3), transparent 60%),
+      radial-gradient(ellipse 60% 60% at 0% 100%, hsl(40 40% 10% / 0.2), transparent 50%),
       hsl(var(--background));
     min-height: 100vh;
   }

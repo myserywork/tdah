@@ -31,11 +31,11 @@ const questions = [
 ]
 
 const answerOptions = [
-  { value: 1, label: "Nunca", emoji: "😌" },
-  { value: 2, label: "Raramente", emoji: "🤔" },
-  { value: 3, label: "Às vezes", emoji: "😐" },
-  { value: 4, label: "Frequentemente", emoji: "😓" },
-  { value: 5, label: "Sempre", emoji: "😰" }
+  { value: 1, label: "Nunca", shortLabel: "Nunca", emoji: "😌" },
+  { value: 2, label: "Raro", shortLabel: "Raro", emoji: "🤔" },
+  { value: 3, label: "Às vezes", shortLabel: "Às vezes", emoji: "😐" },
+  { value: 4, label: "Muito", shortLabel: "Muito", emoji: "😓" },
+  { value: 5, label: "Sempre", shortLabel: "Sempre", emoji: "😰" }
 ]
 
 
@@ -245,9 +245,38 @@ export default function TesteTDAH() {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answers: finalAnswers, totalScore: score })
       })
-      if (response.ok) setReport(await response.json())
+      if (response.ok) {
+        const reportData = await response.json()
+        setReport(reportData)
+        
+        // Notify Discord about test completion
+        const topCat = getTopCategoryFromAnswers(finalAnswers)
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'test_complete',
+            data: { score, level: getScoreLevel(score).level, topCategory: topCat }
+          })
+        }).catch(() => {})
+      }
     } catch (e) { console.error(e) }
-    finally { setStage('result') } // Go directly to result, skip capture
+    finally { setStage('result') }
+  }
+  
+  // Helper to get top category from answers
+  const getTopCategoryFromAnswers = (ans: number[]) => {
+    const cats: Record<string, number[]> = {}
+    questions.forEach((q, i) => {
+      if (!cats[q.category]) cats[q.category] = []
+      cats[q.category].push(ans[i] || 0)
+    })
+    let top = { cat: '', avg: 0 }
+    Object.entries(cats).forEach(([cat, scores]) => {
+      const avg = scores.reduce((a, b) => a + b, 0) / scores.length
+      if (avg > top.avg) top = { cat, avg }
+    })
+    return categoryConfig[top.cat]?.label || top.cat
   }
 
   const handleSubmitLead = async (e: React.FormEvent) => {
@@ -512,16 +541,20 @@ export default function TesteTDAH() {
                 <p className="text-sm text-muted-foreground">{questions[currentQuestion].subtext}</p>
               </div>
               
-              {/* Answer Options - BIGGER for mobile */}
-              <div className="grid grid-cols-5 gap-2 mb-4">
+              {/* Answer Options - Mobile optimized */}
+              <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mb-4">
                 {answerOptions.map(o => (
                   <button 
                     key={o.value} 
                     onClick={() => handleAnswer(o.value)} 
-                    className={`answer-option p-3 md:p-4 text-center rounded-xl transition-all ${answers[currentQuestion] === o.value ? 'selected ring-2 ring-primary' : ''}`}
+                    className={`p-2 sm:p-3 md:p-4 text-center rounded-lg sm:rounded-xl transition-all border-2 
+                      ${answers[currentQuestion] === o.value 
+                        ? 'bg-primary/20 border-primary text-primary' 
+                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                      }`}
                   >
-                    <div className="text-2xl mb-1">{o.emoji}</div>
-                    <div className="text-xs font-medium">{o.label}</div>
+                    <div className="text-xl sm:text-2xl mb-0.5 sm:mb-1">{o.emoji}</div>
+                    <div className="text-[10px] sm:text-xs font-medium leading-tight">{o.shortLabel}</div>
                   </button>
                 ))}
               </div>

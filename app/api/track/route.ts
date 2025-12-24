@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { notifyVisit, notifyTestStart, notifyCheckoutVisit, notifyLeadCapture } from '@/lib/discord'
+import { notifyVisit, notifyTestStart, notifyTestComplete, notifyCheckoutVisit, notifyLeadCapture } from '@/lib/discord'
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,6 +16,14 @@ export async function POST(req: NextRequest) {
       
       case 'test_start':
         await notifyTestStart()
+        break
+      
+      case 'test_complete':
+        await notifyTestComplete({
+          score: data.score,
+          level: data.level,
+          topCategory: data.topCategory
+        })
         break
       
       case 'checkout_visit':

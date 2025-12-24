@@ -125,12 +125,38 @@ export async function notifyPayment(data: {
 export async function notifyTestStart() {
   const embed: DiscordEmbed = {
     title: '🧪 Alguém Iniciou o Teste',
+    description: 'Novo visitante começou a responder as perguntas',
     color: 0x06B6D4, // Cyan
     footer: { text: 'Mente Caótica' },
     timestamp: new Date().toISOString()
   }
   
   return sendDiscordNotification('', [embed])
+}
+
+// Notification when someone completes the test
+export async function notifyTestComplete(data: { score: number; level: string; topCategory: string }) {
+  const levelEmoji: Record<string, string> = {
+    'Leve': '🟢',
+    'Moderado': '🟡',
+    'Significativo': '🟠',
+    'Alto': '🔴'
+  }
+  
+  const embed: DiscordEmbed = {
+    title: '✅ Teste Concluído!',
+    description: 'Alguém terminou o teste e viu o relatório',
+    color: 0x10B981, // Green
+    fields: [
+      { name: '📊 Pontuação', value: `${data.score}/60`, inline: true },
+      { name: `${levelEmoji[data.level] || '📊'} Nível`, value: data.level, inline: true },
+      { name: '🧠 Maior Desafio', value: data.topCategory, inline: true }
+    ],
+    footer: { text: 'Mente Caótica - Resultado' },
+    timestamp: new Date().toISOString()
+  }
+  
+  return sendDiscordNotification('📋 **Relatório gerado!**', [embed])
 }
 
 // Notification when someone reaches checkout
